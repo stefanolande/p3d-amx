@@ -1,0 +1,25 @@
+Welcome to the New and Improved Lago AMX Ghibli
+***********************************************
+Along with this little readme, you'll find a comprehensive PDF that explains everything you need to know about the AMX. I'd like to start off by ackowledging the contributions that made this release possible. First and foremost the original designer of the Lago AMX Ghibli:
+
+Francesco Missarino. . . .The AMX Ghibli was Francesco's first aircraft model and with the help of one of our SOH members I was able to make contact with him via Facebook. I told him what I wanted to do and he was quite excited to think that his first "baby" would be flown again after all these years. As far as I was able to find, the AMX had not been available for purchase for many years and no one seemed interested in reviving it. With that information he intially gave his blessing for the upgrade but still had to gain final OK from others. I finally heard back from him many weeks later with the great news that we were cleared to produce the "New and Improved" AMX as freeware. My thanks to Francesco and Alberto Sangalli for giving us the go ahead.
+
+. . . .and the SOH Members:
+Bluebear (Ulrich). . .he stepped up initially while busy with the Conversion of the LET_410 to do the conversion to Native FSX. . . .the first step in the rebuild of the AMX. My thanks for his work to get us over that first hump.
+
+Henk. . . . . . . . .He showed an interest in doing additional modeling and supplying animation to many of the functions that no longer worked due to the old coding from FS9. He also reworked some of the out of date "gau & dll" files with a very effective xml controller eliminating the need for the cumbersome dll modules that were common on all of the Lago aircraft of that time. Also his Configuration Manager has shown to be one of the hi-lites of this new model, allowing Bombs, Missiles and external tanks to be loaded and weight adjusted on the fly.
+
+You'll also find that all gauges and many of the system switches and knobs are now 3D, even the Data Entry keyboard and display is a functional Autopilot and simple to use. All in all I think you'll be very pleased with what you find. Henk has done a masterful job of bringing the Ghibli to life again.
+*******************************************************************
+
+The AMX was my first payware airplane and I flew it almost everyday for quite a few years while part of the Lago Flying Club. I hosted a server for our flights and actually had quite a few who regularly flew preplanned flight plans and chatted away online (don't remember the comm program we used now). The AMX was also my choice of aircraft for the First Lago Tiger Meet which required that we take off at set intervals from Malpensa, fly a prescribed route of our own design and do a flyover at Sion (a judge was stationed at the airport to record our time). The member with the best time won (believe they got to choose from any of the other payware addons as their prize). I may be wrong on this point, but I think one of our SOH members was the eventual winner. I have been a fan of the AMX ever since and this is the culmination of that wish to be able to fly her once again.
+
+ADDITIONAL CREDITS
+Beta Testers:
+Francesco Missarino
+William Davidson (WND)
+Priller
+
+
+My sincere thanks to everyone involved!!
+ejwells409@cableone.net
