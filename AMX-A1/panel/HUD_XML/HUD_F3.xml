@@ -1,0 +1,917 @@
+<Gauge Name="HUD_F14A" Version="1.0">
+<Comment>
+Realistic HUD for the F-14 Tomcat (A model) Version 1.00, Nov 10, 2012 Original HUD concept by Scott Printz (saprintz@gmail.com) F-14 modification by Jivko Rusev (jrusev@gmail.com)
+MOD - stripped **** FOR VIRTAVIA TOR F3 *************
+Virtavia switches:
+(L:HUD POWER,bool)	HUD on/off switch
+(L:HSI MODE, number) controls HUD modes
+(L:HUD HEIGHT SCALE, bool) alt / baro
+(L:HUD SPEED SCALE, bool)  ias/mach
+(L:HUD DIRECTOR, bool) ILS DIRECTOR not used
+(L:HUD TRACK, bool)	track not used
+(L:HUD AA, bool)  not used
+</Comment>
+<Size X="500" Y="500"/>
+<Update Frequency="18"/>
+
+<Element>
+	<Macro Name="unit2deg">@1 0.91 * 3.01 -</Macro>
+	<Macro Name="deg2unit">@1 3.01 + 1.0989 *</Macro>
+	<Macro Name="GearDnShift">180</Macro>
+	<Macro Name="MinSpeed">49</Macro>
+	<Macro Name="AboveMinSpeed">(A:AIRSPEED INDICATED, knots) @MinSpeed &gt; (A:Sim On Ground, bool) ! ||</Macro>
+	<Macro Name="mod">@1 @2 @1 @2 / flr * -</Macro>
+	<Macro Name="radnor180">@mod( @1 pi +, pi 2 * ) pi -</Macro>
+	<Macro Name="radnor90">@radnor180( @1 ) sp0 l0 abs pi 0.5 * &lt;= if{ l0 } els{  pi 0.5 * @mod( l0 pi 0.5 * +, pi ) - }</Macro>
+	<!-- <Macro Name="ghost_horizon_vis">(A:PLANE PITCH DEGREES, degrees) 4 (A:PLANE BANK DEGREES, radians) cos * + abs 7 &gt;</Macro> -->
+	<Macro Name="ghost_horizon_vis">(A:PLANE PITCH DEGREES, degrees) 12 -4 + 0.5 * (A:PLANE BANK DEGREES, radians) cos * + abs 12 -4 - 0.5 * &gt;</Macro>
+	<Macro Name="disrad">pi 180 60 * /</Macro>
+	<Macro Name="degnor180">@radnor180( @1 dgrd ) rddg</Macro>
+	<Macro Name="lat">@1 sin @3 cos * @1 cos @3 sin * @4 cos * + asin</Macro>
+	<Macro Name="lon">@radnor180( @2 @4 sin @3 sin * @1 cos * @3 cos @1 sin @lat( @1, @2, @3, @4 )  sin * - atg2 - )</Macro>
+	<Macro Name="dist">2 @1 @3 - 0.5 * sin sqr @1 cos @3 cos * @2 @4 - 0.5 * sin sqr * + sqrt asin *</Macro>
+	<Macro Name="bearing">@2 @4 - sin @3 cos * @1 cos  @3 sin * @1 sin @3 cos * @2 @4 - cos * -  atg2 rnor</Macro>
+	<Macro Name="Plane_Lat">(A:PLANE LATITUDE, radians)</Macro>
+	<Macro Name="Plane_Lon">(A:PLANE LONGITUDE, radians) /-/</Macro>
+
+</Element>	
+<Element>	
+	<Macro Name="ALT">(A:Indicated Altitude, feet)</Macro>
+	<Macro Name="VSI_VALID">-9999 32999 (A:VERTICAL SPEED, feet per minute) rng</Macro>
+	<Macro Name="LAW_setting">(A:DECISION HEIGHT, feet)</Macro> <!-- (A:DECISION HEIGHT, feet) is 200 feet by default -->
+	<Macro Name="LAW_duration">3</Macro>
+	<Macro Name="RALT_VALID">
+		(A:PLANE PITCH DEGREES, degrees) abs 60 &lt;
+		(A:PLANE BANK DEGREES, degrees) abs 60 &lt; &amp;&amp;
+		(A:Radio Height, feet) 5000 &lt; &amp;&amp;
+	</Macro>
+	<Macro Name="Frag_Alt">500</Macro>
+	<Macro Name="FOV_left">-8.5</Macro>
+	<Macro Name="FOV_right">8.5</Macro>
+	<Macro Name="FOV_top">-4.0</Macro>
+	<Macro Name="FOV_bottom">13.0</Macro>
+</Element>
+<Element>
+	<Macro Name="SinBank">(A:PLANE BANK DEGREES, radians) sin</Macro>
+	<Macro Name="CosBank">(A:PLANE BANK DEGREES, radians) cos</Macro>
+	<Macro Name="LadderRefIsVV">(L:VectorOnGlass, enum) @AboveMinSpeed &amp;&amp;</Macro>
+	<Macro Name="LadderRefX">@LadderRefIsVV if{ (L:VVectX, degrees) } els{ 0 }</Macro>
+	<Macro Name="LadderRefY">@LadderRefIsVV if{ (L:VVectY, degrees) } els{ 0 }</Macro>
+	<Macro Name="ClimbAngle">(A:VELOCITY WORLD Y, m/s) (A:GROUND VELOCITY, m/s) atg2 rddg /-/</Macro>
+	<Macro Name="LadderRefAngle">@LadderRefIsVV if{ @ClimbAngle } els{ (A:PLANE PITCH DEGREES, degrees) }</Macro>
+	<Macro Name="LadderTransitionSpeed">6.00</Macro>
+	<Macro Name="LadderIsNearRef">
+		@LadderTransitionSpeed (L:dt, seconds) * (&gt;L:LadderStep, degrees)
+		@LadderRefX (L:LadderX, degrees) - sqr @LadderRefY (L:LadderY, degrees) - sqr + sqrt (&gt;L:LadderOffset, degrees)
+		(L:LadderStep, degrees) (L:LadderOffset, degrees) &gt;=
+	</Macro>
+	<Macro Name="LadderMove">
+		@LadderRefX  (L:LadderX, degrees) -  (L:LadderStep, degrees) *   (L:LadderOffset, degrees)  /   (L:LadderX, degrees) + (&gt;L:LadderX, degrees)
+		@LadderRefY  (L:LadderY, degrees) - (L:LadderStep, degrees) *   (L:LadderOffset, degrees)  /  (L:LadderY, degrees) + (&gt;L:LadderY, degrees)
+		(L:LadderY, degrees) @CosBank * (L:LadderX, degrees) @SinBank * + (A:PLANE PITCH DEGREES, degrees) + (&gt;L:LadderAngle, degrees)
+	</Macro>
+	<Macro Name="LadderSnap">
+		@LadderRefX  (&gt;L:LadderX, degrees)
+		@LadderRefY  (&gt;L:LadderY, degrees)
+		@LadderRefAngle  (&gt;L:LadderAngle, degrees)
+	</Macro>
+</Element>
+<Element>
+	<Macro Name="Minimum_Warning_Time">5.0</Macro>
+	<Macro Name="Roll_delay">(A:PLANE BANK DEGREES, radians) abs 2.7 /</Macro>
+	<Macro Name="Total_Warning_Time">@Minimum_Warning_Time @Roll_delay +</Macro>
+	<Macro Name="Initial_Altitude_Loss">(A:VELOCITY WORLD Y, feet per second) /-/ @Total_Warning_Time *</Macro>
+	<Macro Name="Recovery_max_G">4.0</Macro>
+	<Macro Name="ClimbAngle_rad">(A:VELOCITY WORLD Y, m/s) (A:GROUND VELOCITY, m/s) atg2 /-/</Macro>
+	<Macro Name="Recovery_altitude_loss">1 @ClimbAngle_rad cos - (A:VELOCITY BODY Z, m/s) sqr * 9.81 / @Recovery_max_G / 0.3048 /</Macro>
+	<Macro Name="Dive_Altitude">@Initial_Altitude_Loss @Recovery_altitude_loss +</Macro>
+	<Macro Name="Floor_Airspeed">(L:WoffW Time, seconds) 60 &lt; if{ 250 } els{ 200 }</Macro>
+	<Macro Name="Floor_vsi">(L:WoffW Time, seconds) 60 &lt; if{ -300 } els{ -1500 }</Macro>
+	<Macro Name="Gear">(L:WoffW Time, seconds) 60 &lt; if{ 1 } els{ (A:GEAR HANDLE POSITION, percent) }</Macro>
+	<Macro Name="vsi_less_than">(A:VELOCITY WORLD Y, feet per minute) @1 &lt; if{ 1 } els{ 0 }</Macro>
+	<Macro Name="Below">(A:Radio height, feet) @1 &lt; if{ 1 } els{ 0 }</Macro>
+	<Macro Name="Above">@Below(@1) ! </Macro>
+	<Macro Name="Faster">(A:AIRSPEED INDICATED, knots) @1 &gt; if{ 1 } els{ 0 }</Macro>
+	<Macro Name="Slower">@Faster(@1) !</Macro>
+	<Macro Name="CFIT">
+		@Above(150) 	@vsi_less_than(0)		@Below(@Dive_Altitude)		&amp;&amp; &amp;&amp;
+		@Below(90)	@vsi_less_than(0) 		@Faster(@Floor_Airspeed) 		&amp;&amp; &amp;&amp; ||
+		@Below(150)	@vsi_less_than(@Floor_vsi) 	@Slower(@Floor_Airspeed)	@Gear	&amp;&amp; &amp;&amp; &amp;&amp; ||
+		(A:Sim On Ground, bool) ! &amp;&amp;
+		if{ 1 }
+		els{ 0 }
+	</Macro>
+</Element>
+<Element>
+	<Macro Name="hdg_float">(A:Plane heading degrees gyro, degrees)</Macro>
+	<Macro Name="hdg_int">@hdg_float 0.1 * int 10 * @1 +</Macro>
+	<Macro Name="hdg_pix">10.9</Macro>
+	<Macro Name="BGOH">
+		(L:Point_X_ref, degrees) @FOV_left &gt;
+		(L:Point_X_ref, degrees) @FOV_right &lt;
+		(L:Point_Y_ref, degrees) @FOV_top &gt;
+		(L:Point_Y_ref, degrees) @FOV_bottom &lt;
+		&amp;&amp; &amp;&amp; &amp;&amp;
+		if{ 1 } els{ 0 }
+	</Macro>
+	<Macro Name="clip_margin">0.54</Macro>
+	<Macro Name="gunsight_on_glass">@1 abs @FOV_right &lt; @FOV_top @clip_margin - @FOV_bottom @2 rng &amp;&amp; if{ 1 } els{ (L:IsFlashTime) }</Macro>
+	<Macro Name="GAAA">(A:VELOCITY WORLD Y, m/s) (A:GROUND VELOCITY, m/s) atg2 rddg /-/</Macro>
+	<Macro Name="GAAB">(A:VELOCITY WORLD Y, m/s) sqr 2 9.81 * (A:PLANE ALT ABOVE GROUND, meter) * + sqrt (A:VELOCITY WORLD Y, m/s) + 9.81 /</Macro>
+	<Macro Name="GAAC">(A:GROUND VELOCITY, m/s) @GAAB * (L:GAAH) @GAAB sqr * 0.5 * -</Macro>
+	<Macro Name="GAAD">(A:PLANE ALT ABOVE GROUND, meter) @GAAC atg2 rddg</Macro>
+	<Macro Name="GAAE">@GAAD @GAAA -</Macro>
+	<Macro Name="GAAF">@GAAC @GAAD dgrd cos /</Macro>
+</Element>
+<Element>
+	<Macro Name="GBAA">(L:GAAI) abs @FOV_right &lt; @FOV_top @FOV_bottom (L:GAAJ) rng &amp;&amp; if{ 1 } els{ 0 }</Macro>
+	<Macro Name="GBAB">@GAAC 10000 &lt; @GBAA &amp;&amp; if{ 1 } els{ 0 }</Macro>
+	<Macro Name="GBAC">(A:VELOCITY WORLD X, m/s) (A:VELOCITY WORLD Z, m/s) atg2 rnor</Macro>
+	<Macro Name="GBAD">@GAAC @GBAC cos *</Macro>
+	<Macro Name="GBAE">@GAAC @GBAC sin *</Macro>
+	<Macro Name="GBAF">(A:PLANE ALT ABOVE GROUND, meter)</Macro>
+	<Macro Name="GBAG">60 180 * pi /</Macro>
+	<Macro Name="GBAH">1852</Macro>
+	<Macro Name="GBAI">@GBAD @GBAH / @GBAG /</Macro>
+	<Macro Name="GBAJ">@GBAE @GBAH / @GBAG / (A:PLANE LATITUDE, radians) cos /</Macro>
+	<Macro Name="GBAK">@GBAF /-/ @GBAH /</Macro>
+	<Macro Name="GBAL">(A:PLANE LATITUDE, radians) @GBAI +</Macro>
+	<Macro Name="GBAM">(A:PLANE LONGITUDE, radians) @GBAJ +</Macro>
+	<Macro Name="GBAN">(A:PLANE ALTITUDE, nmiles) @GBAK +</Macro>
+</Element>
+<Element>
+	<Macro Name="GBAO">pi 180 60 * /</Macro>
+	<Macro Name="GBAP">2 @1 @3 - 0.5 * sin sqr @1 cos @3 cos * @2 @4 - 0.5 * sin sqr * + sqrt asin *</Macro>
+	<Macro Name="GBAQ">@2 @4 - sin @3 cos * @1 cos  @3 sin * @1 sin @3 cos * @2 @4 - cos * -  atg2 rnor</Macro>
+</Element>
+<Element>
+	<Macro Name="GBAU">
+		@GBAP( (A:PLANE LATITUDE, radians), (A:PLANE LONGITUDE, radians) /-/, (L:GBAL, radians), (L:GBAM, radians) /-/ ) (&gt;L:GBAP_ref)
+		@GBAQ( (A:PLANE LATITUDE, radians), (A:PLANE LONGITUDE, radians) /-/, (L:GBAL, radians), (L:GBAM, radians) /-/ ) (&gt;L:GBAQ_ref)
+		(A:PLANE ALTITUDE, nmiles) (L:GBAN, nmiles) - (L:GBAP_ref) @GBAO / atg2 (&gt;L:elevation_ref)
+		@GBAP( (A:PLANE PITCH DEGREES, radians) /-/, (A:PLANE HEADING DEGREES TRUE, radians), (L:elevation_ref) /-/, (L:GBAQ_ref) ) (&gt;L:vis_GBAP)
+		@GBAQ( (A:PLANE PITCH DEGREES, radians) /-/, (A:PLANE HEADING DEGREES TRUE, radians), (L:elevation_ref) /-/, (L:GBAQ_ref) ) (&gt;L:vis_GBAQ)
+		(L:vis_GBAP) (L:vis_GBAQ) (A:PLANE BANK DEGREES, radians) - sin * rddg (&gt;L:GBAR, degrees)
+		(L:vis_GBAP) (L:vis_GBAQ) (A:PLANE BANK DEGREES, radians) - cos *  /-/ rddg (&gt;L:GBAS, degrees)
+		(L:GBAP_ref) @GBAO / (&gt;L:GBAT, nmiles)
+		(L:GBAQ_ref) (&gt;L:PDGT_Radial, radians)
+	</Macro>
+</Element>
+<Element>
+	<Macro Name="CageZ">(L:CageX, degrees) abs 1.5 &lt; (L:CageY, degrees) abs 1.5 &lt; &amp;&amp;</Macro>
+	<Macro Name="phi">(A:PLANE BANK DEGREES, radians)</Macro>
+	<Macro Name="Diamond_X">@Point_Relative_Elevation @phi sin * @Point_Relative_Bearing @Point_elevation dgrd cos * @phi cos * -</Macro>
+	<Macro Name="Diamond_Y">@Point_Relative_Elevation @phi cos * @Point_Relative_Bearing @Point_elevation dgrd cos * @phi sin * +</Macro>
+	<Macro Name="DiamondOnGlass">
+		@Diamond_X abs @FOV_right &lt;
+		@Diamond_Y @FOV_bottom &lt; &amp;&amp;
+		@Diamond_Y @FOV_top &gt; &amp;&amp;
+		if{ 1 } els{ 0 }
+	</Macro>
+</Element>
+
+<Element>
+	<Element>
+		<Element>
+			<Select>
+				<Value>
+					(L:F14AB_HUD_Init, bool) 0 ==
+					if{
+						1 (&gt;L:Cage Switch,enum) <!-- caged -->
+						(A:GPS drives nav1, bool) if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) }
+
+					1 (&gt;L:F14AB_HUD_Init, bool)
+					}
+				</Value>
+			</Select>
+		</Element>
+		<Element>
+			<Select>
+				<Value>
+					(P:LOCAL TIME, seconds) s0 0.40 % 0.20 &lt; l0 (L:Time1-3, seconds) == || (&gt;L:IsFlashTime, bool)
+					(L:Time1-2, seconds) (&gt;L:Time1-3, seconds)
+					(L:Time1-1, seconds) (&gt;L:Time1-2, seconds)
+					l0 (&gt;L:Time1-1, seconds)
+				</Value>
+			</Select>
+		</Element>
+		<Element>
+			<Select>
+				<Value>@AboveMinSpeed
+					if{
+						(A:VELOCITY BODY X, m/s) (A:VELOCITY BODY Z, m/s) atg2 rddg /-/ (&gt;L:DriftX, degrees)
+						(A:VELOCITY BODY Y, m/s) (A:VELOCITY BODY Z, m/s) atg2 rddg /-/ (&gt;L:DriftY, degrees)
+					}
+					els{
+						(A:PLANE PITCH DEGREES,degrees) (A:PLANE BANK DEGREES,radians) sin * /-/ (&gt;L:DriftX, degrees)
+						(A:PLANE PITCH DEGREES,degrees) (A:PLANE BANK DEGREES,radians) cos * /-/ (&gt;L:DriftY, degrees)
+					}
+
+					@AboveMinSpeed (L:Cage switch,enum) 0 &gt; &amp;&amp;
+					if{
+						(L:DriftX, degrees) (A:PLANE BANK DEGREES, radians) cos (A:PLANE BANK DEGREES, radians) cos * * /-/ (&gt;L:CageX, degrees)
+						(L:DriftX, degrees) (A:PLANE BANK DEGREES, radians) cos (A:PLANE BANK DEGREES, radians) sin * * (&gt;L:CageY, degrees)
+
+					}
+					els{
+						0 (&gt;L:CageX, degrees)
+						0 (&gt;L:CageY, degrees)
+					}
+
+					(L:DriftX, degrees) (L:CageX, degrees) + (&gt;L:VVectX, degrees)
+					(L:DriftY, degrees) (L:CageY, degrees) + (&gt;L:VVectY, degrees)
+
+					(L:DriftX, degrees) abs @FOV_right &lt; @FOV_top @FOV_bottom (L:DriftY, degrees) rng &amp;&amp; if{ 1 (&gt;L:GhostVectorOnGlass, enum) } els{ 0 (&gt;L:GhostVectorOnGlass, enum) }
+					(L:VVectX, degrees) abs @FOV_right &lt; @FOV_top @FOV_bottom (L:VVectY, degrees) rng &amp;&amp; if{ 1 (&gt;L:VectorOnGlass, enum) } els{ 0 (&gt;L:VectorOnGlass, enum) }
+				</Value>
+			</Select>
+		</Element>
+		<Element>
+			<Select>
+				<Value>
+					(L:Baro_chng, bool)
+					(A:Indicated Altitude, feet) (L:Indicated Altitude-1, feet) 18000 rng ||
+					(L:Indicated Altitude-1, feet) (A:Indicated Altitude, feet) 18000 rng ||
+					if{ 
+						(L:Baro_timer, seconds) 0 ==
+						if{ 
+							(P:Absolute Time, seconds) (&gt;L:Baro_timer, seconds)
+							(L:Baro_chng, bool) (&gt;L:Baro_set, bool)
+						} 
+						(P:Absolute Time, seconds) (L:Baro_timer, seconds) - 5 &lt; (&gt;L:Baro_chng, bool)
+					} 
+					els{ 
+						0 (&gt;L:Baro_chng, bool) 
+						0 (&gt;L:Baro_timer, seconds) 
+					}
+					(A:Indicated Altitude, feet) (&gt;L:Indicated Altitude-1, feet)
+				</Value>
+			</Select>
+		</Element>
+	</Element>
+</Element>	
+
+<Element>
+	<Element>
+		<Select>
+			<Value>(A:Plane heading degrees true, degrees) (A:Plane heading degrees gyro, degrees) - (&gt;L:Gyro_Error, degrees)</Value>
+		</Select>
+	</Element>
+</Element>
+
+<Element>
+	<Element>
+		<Macro Name="Point_Relative_Bearing">@degnor180( @Point_Bearing (A:Plane heading degrees true, degrees) - )</Macro>
+		<Macro Name="Point_Relative_Elevation">@Point_elevation (A:PLANE PITCH DEGREES, degrees) -</Macro>
+
+		<Macro Name="GPS_CDI">@radnor90( (A:GPS WP BEARING, radians) (A:GPS WP DESIRED TRACK, radians) - ) rddg</Macro>
+	</Element>
+	<Element>
+		<Macro Name="ILS_LOC_Mode">(A:HSI has localizer, bool) (A:HSI CDI NEEDLE VALID, bool) &amp;&amp;
+			if{ 0 }
+			els{ 	(A:NAV1 HAS NAV, bool) ! @ILS_LOC_NEEDLE_VALID &amp;&amp;
+				if{ 1 }
+				els{ 2 }
+			}
+		</Macro>
+		<Macro Name="ILS_GS_Mode">(A:HSI GSI needle valid, bool) if{ 0 } els{ (A:NAV1 HAS NAV, bool) ! @ILS_GS_NEEDLE_VALID &amp;&amp; if{ 1 } els{ 2 } }</Macro>
+		<Macro Name="LOC_Needle">0 (L:LOC Error, degrees) (A:NAV1 RADIAL ERROR, degrees) 3 @ILS_LOC_Mode case</Macro>
+		<Macro Name="GS_Needle">0 (L:GS Error, degrees) (A:NAV1 GLIDE SLOPE ERROR, degrees) 3 @ILS_GS_Mode case</Macro>
+	</Element>
+	<Element>
+		<Select>
+			<Value>
+				@Point_Relative_Bearing (&gt;L:Point_Relative_Bearing, degrees)
+			</Value>
+		</Select>
+	</Element>
+</Element>
+
+<!-- HUD Main element -->
+<Element>
+	<Visible>(A:ELECTRICAL MASTER BATTERY, bool) (L:HUD POWER,bool) ! and</Visible>
+<Element>
+	<Element>
+		<Element>
+			<Element>
+    				<Position X="330" Y="287"/>
+				<Image Name="Waterline_A_00FF00.bmp" Bright="Yes">
+					<Axis X="71" Y="7"/>
+				</Image>
+			</Element>
+			<Element>
+				<Visible>
+				(L:VectorOnGlass, enum) 0 == if{ (L:IsFlashTime) } els{ 1 }
+				</Visible>
+				<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
+				<Image Name="Velocity_Vector_A_00FF00.bmp" Bright="Yes">
+					<Axis X="3" Y="0"/>
+				</Image>
+				<Shift>
+					<Value>(L:VVectX, degrees) @FOV_left max @FOV_right min</Value>
+					<Nonlinearity>
+						<Item Value="-90"  X="4427"/>
+						<Item Value="90" X="-3851"/>
+					</Nonlinearity>
+				</Shift>
+				<Shift>
+		 			<Value>(L:VVectY, degrees) @FOV_top max @FOV_bottom min</Value>
+					<Nonlinearity>
+						<Item Value="0" Y="253"/>
+						<Item Value="90"  Y="4392"/>
+					</Nonlinearity>
+				</Shift>
+				</Element>
+			<Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_90_A_00FF00.bmp" Bright="Yes" ImageSizes="259,1696">
+						<Axis X="154" Y="4154"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_70_80_A_00FF00.bmp" Bright="Yes" ImageSizes="259,1696">
+						<Axis X="154" Y="3690"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_60_A_00FF00.bmp" Bright="Yes" ImageSizes="259,1635">
+						<Axis X="154" Y="2774"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_40_50_A_00FF00.bmp" Bright="Yes" ImageSizes="259,1635">
+						<Axis X="154" Y="2310"/>
+					</Image>
+				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_25_30_A_00FF00.bmp" Bright="Yes" ImageSizes="259,1635">
+						<Axis X="154" Y="1391"/>
+					</Image>
+				</Element>
+    				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_20_5_A_00FF00.bmp" Bright="Yes" ImageSizes="294,712">
+						<Axis X="154" Y="935"/>
+					</Image>
+     				</Element>
+				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Horizon_A_00FF00.bmp" Bright="Yes" ImageSizes="259,31">
+						<Axis X="184" Y="6"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_-5_-20_A_00FF00.bmp" Bright="Yes" ImageSizes="294,718">
+						<Axis X="154" Y="-208"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_-25_-30_A_00FF00.bmp" Bright="Yes" ImageSizes="294,1638">
+						<Axis X="154" Y="-1127"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_-40_-50_A_00FF00.bmp" Bright="Yes" ImageSizes="294,1638">
+						<Axis X="154" Y="-1829"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_-60_A_00FF00.bmp" Bright="Yes" ImageSizes="294,1638">
+						<Axis X="154" Y="-2744"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_-70_-80_A_00FF00.bmp" Bright="Yes" ImageSizes="294,1699">
+						<Axis X="154" Y="-3208"/>
+					</Image>
+     				</Element>
+     				<Element>
+					<Clip Top="175" Left="-100" Right="760" Bottom="900"/>
+					<Image Name="Pitch_Ladder_-90_A_00FF00.bmp" Bright="Yes" ImageSizes="294,1699">
+						<Axis X="154" Y="-4124"/>
+					</Image>
+     				</Element>
+				<Shift>
+					<Value>(A:PLANE PITCH DEGREES, degrees)</Value>
+					<Nonlinearity>
+						<Item Value="-90" Y="4139"/>
+						<Item Value="90" Y="-4139"/>
+					</Nonlinearity>
+				</Shift>
+				<Rotate>
+					<Value>(A:PLANE BANK DEGREES,radians)</Value>
+				</Rotate>
+				<Shift><Value>330</Value><Scale X="1"/></Shift>
+				<Shift><Value>287</Value><Scale Y="1"/></Shift>
+			</Element>
+
+<!-- standard ILS needles 
+			<Element>
+				<Visible>(L:HSI MODE, number) 4 == (A:HSI CDI needle valid,bool) &amp;&amp;</Visible>
+				<Element>
+					<Visible>(A:HSI CDI needle valid,bool)</Visible>
+    	  				<Position X="330" Y="287"/>
+					<Image Name="Needle_localizer_A_00FF00.bmp" Bright="Yes" ImageSizes="3,151">
+						<Axis X="2" Y="87"/>
+					</Image>
+					<Shift>
+						<Value>@LOC_Needle -6 max 6 min</Value>
+						<Scale X="13"/>
+					</Shift>
+				</Element>
+				<Element>
+					<Visible>(A:HSI GSI needle valid,bool)</Visible>
+    	  				<Position X="330" Y="287"/>
+					<Image Name="Needle_glideslope_A_00FF00.bmp" Bright="Yes" ImageSizes="151,3">
+						<Axis X="87" Y="2"/>
+					</Image>
+					<Shift>
+						<Value>@GS_Needle -1.4 max 1.4 min</Value>
+						<Scale Y="55.7"/>
+					</Shift>
+				</Element>
+			</Element>
+-->
+<!-- MOD -->
+			<Element>
+			<Visible>(A:NAV HAS NAV:2,bool)</Visible>
+				<Element>
+					<Position X="330" Y="287"/>
+					<Element>
+						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
+						<Select>
+							<Value>(A:NAV TOFROM:2, enum)</Value>
+							<Case Value="1">
+								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
+									<Axis X="2" Y="87"/>
+		    						</Image>
+							</Case>
+							<Case Value="2">
+								<Image Name="CDI_FROM_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
+									<Axis X="2" Y="87"/>
+		    						</Image>
+							</Case>
+						</Select>
+					</Element>
+					<Shift>
+						<Value Minimum="-6" Maximum="+6">(A:NAV RADIAL:2, radians) pi + rddg (A:Plane heading degrees gyro, radians) rddg -</Value> 
+						<Scale X="23"/>
+					</Shift>
+				</Element>
+			</Element>
+			<Element>
+			<Visible>(A:GPS IS ACTIVE WAY POINT,bool)</Visible>
+				<Element>
+					<Position X="330" Y="287"/>
+					<Element>
+						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
+						<Select>
+							<Value>@GPS_TOFROM</Value>
+							<Case Value="1">
+								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
+									<Axis X="2" Y="87"/>
+		    						</Image>
+							</Case>
+							<Case Value="2">
+								<Image Name="CDI_FROM_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
+									<Axis X="2" Y="87"/>
+		    						</Image>
+							</Case>
+						</Select>
+					</Element>
+					<Shift>
+						<Value>@GPS_CDI -6 max 6 min</Value>
+						<Scale X="23"/>
+					</Shift>
+				</Element>
+			</Element>
+
+			<Element>
+				<Element>
+					<Select>
+						<Value>(A:Sim On Ground, bool)
+							if{ (P:LOCAL TIME, seconds) (&gt;L:WoffW Start Time, seconds) 0 (&gt;L:WoffW Time, seconds) }
+							els{ (P:LOCAL TIME, seconds) (L:WoffW Start Time, seconds) - (&gt;L:WoffW Time, seconds) }
+						</Value>
+					</Select>
+				</Element>
+				<Element>
+					<Select>
+						<Value>@CFIT (&gt;L:PULL_UP_WARNING)</Value>
+					</Select>
+				</Element>
+				<Element>
+					<Visible>(L:PULL_UP_WARNING) (L:IsFlashTime) &amp;&amp;</Visible>
+					<Element>
+						<Position X="330" Y="287"/>
+						<Polyline Color="#00FF00" LineWidth="5" Bright="Yes">
+							<Point X="-65" Y="-65"/>
+							<Point X="65" Y="65"/>
+						</Polyline>
+					</Element>
+					<Element>
+						<Position X="330" Y="287"/>
+						<Polyline Color="#00FF00" LineWidth="5" Bright="Yes">
+							<Point X="65" Y="-65"/>
+							<Point X="-65" Y="65"/>
+						</Polyline>
+					</Element>
+				</Element>
+			</Element>
+		</Element>
+		<Element>
+			<Element>
+<!-- MOD: Upd rad alt ladder viscon -->
+				<Element>
+					<Visible>(A:Radio Height, feet) 1500 &lt; @RALT_VALID and </Visible>
+					<Element>
+    						<Position X="330" Y="287"/>
+						<Image Name="alt_scale_A_00FF00.bmp" Bright="Yes">
+							<Axis X="-207" Y="106"/>
+						</Image>
+					</Element>
+					<Element>
+    	  					<Position X="539" Y="507"/>
+						<Image Name="right_caret_A_00FF00.bmp" Bright="Yes">
+							<Axis X="29" Y="17"/>
+						</Image>
+						<Shift>
+							<Value>(A:Radio Height, feet) 0 max 1400 min</Value>
+							<Scale Y="-0.225"/>
+						</Shift>
+					</Element>
+					<Element>
+						<Element>
+							<Position X="539" Y="272"/>
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%( 1 )%!d!</String>
+								<Axis X="15" Y="20"/>
+							</Text>
+						</Element>
+						<Element>
+							<Position X="539" Y="497"/>
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%( 0 )%!d!</String>
+								<Axis X="13" Y="20"/>
+							</Text>
+						</Element>
+						<Shift><Value>1</Value><Scale X="35"/></Shift>
+					</Element>
+					<Shift><Value>1</Value><Scale X="10"/></Shift>
+					<Shift><Value>1</Value><Scale Y="0"/></Shift>
+				</Element>
+<!-- MOD: Upd baro alt ladder viscon -->
+				<Element>
+					<Visible>(A:Radio Height, feet) 1500 > </Visible>
+					<Element>
+    						<Position X="330" Y="287"/>
+						<Image Name="alt_scale_A_00FF00.bmp" Bright="Yes">
+							<Axis X="-207" Y="106"/>
+						</Image>
+					</Element>
+					<Element>
+    	  					<Position X="539" Y="507"/>
+						<Image Name="right_caret_A_00FF00.bmp" Bright="Yes">
+							<Axis X="29" Y="17"/>
+						</Image>
+						<Shift>
+							<Value>(A:Indicated Altitude, feet) 0 max 14000 min</Value>
+							<Scale Y="-0.0225"/>
+						</Shift>
+					</Element>
+					<Element>
+						<Element>
+							<Position X="539" Y="272"/>
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%( 10 )%!d!</String>
+								<Axis X="15" Y="20"/>
+							</Text>
+						</Element>
+						<Element>
+							<Position X="539" Y="497"/>
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%( 0 )%!d!</String>
+								<Axis X="13" Y="20"/>
+							</Text>
+						</Element>
+						<Shift><Value>1</Value><Scale X="35"/></Shift>
+					</Element>
+					<Shift><Value>1</Value><Scale X="10"/></Shift>
+					<Shift><Value>1</Value><Scale Y="0"/></Shift>
+				</Element>
+				<Element>
+					<Element>
+    						<Position X="330" Y="287"/>
+						<Image Name="left_scale_A_00FF00.bmp" Bright="Yes">
+							<Axis X="226" Y="139"/>
+						</Image>
+					</Element>
+					<Element>
+    	  					<Position X="127" Y="294"/>
+						<Image Name="left_caret_A_00FF00.bmp" Bright="Yes">
+							<Axis X="5" Y="17"/>
+						</Image>
+						<Shift>
+							<Value>(A:Vertical speed,feet per minute) -2000 max 2000 min</Value>
+							<Scale Y="-0.09"/>
+						</Shift>
+					</Element>
+					<Element>
+						<Position X="80" Y="204"/>
+						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<String>%( +1 )%!+d!</String>
+							<Axis X="17" Y="20"/>
+						</Text>
+					</Element>
+					<Element>
+						<Position X="80" Y="294"/>
+						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<String>%( 0 )%!2d!</String>
+							<Axis X="13" Y="20"/>
+						</Text>
+					</Element>
+					<Element>
+						<Position X="80" Y="384"/>
+						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<String>%( -1 )%!+d!</String>
+							<Axis X="15" Y="20"/>
+						</Text>
+					</Element>
+					<Shift><Value>1</Value><Scale X="-10"/></Shift>
+					<Shift><Value>1</Value><Scale Y="0"/></Shift>
+				</Element>
+			</Element>
+			<Element>
+				<Element>
+					<Element>
+						<Visible>@hdg_int(-20) @hdg_float - abs 15 &lt;</Visible>
+						<Element>
+							<Position X="280" Y="164"/>
+							<Clip Left="150" Right="510"/>
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%(@hdg_int(-20) dnor 10 /)%!d!</String>
+							</Text>
+							<Shift>
+								<Value>@hdg_int(-20) @hdg_float - @hdg_pix *</Value>
+								<Scale X="1"/>
+							</Shift>
+						</Element>
+					</Element>
+					<Element>
+						<Visible>@hdg_int(-10) @hdg_float - abs 15 &lt;</Visible>
+						<Element>
+							<Position X="280" Y="164"/>
+							<Clip Left="150" Right="510"/>
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%(@hdg_int(-10) dnor 10 /)%!d!</String>
+							</Text>
+							<Shift>
+								<Value>@hdg_int(-10) @hdg_float - @hdg_pix *</Value>
+								<Scale X="1"/>
+							</Shift>
+						</Element>
+					</Element>
+					<Element>
+						<Position X="280" Y="164"/>
+						<Clip Left="150" Right="510"/>
+						<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<String>%(@hdg_int(0) dnor 10 /)%!d!</String>
+						</Text>
+						<Shift>
+							<Value>@hdg_int(0) @hdg_float - @hdg_pix *</Value>
+							<Scale X="1"/>
+						</Shift>
+					</Element>
+					<Element>
+						<Visible>@hdg_int(10) @hdg_float - abs 15 &lt;</Visible>
+						<Element>
+							<Position X="280" Y="164"/>
+							<Clip Left="150" Right="510"/>
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%(@hdg_int(10) dnor 10 /)%!d!</String>
+							</Text>
+							<Shift>
+								<Value>@hdg_int(10) @hdg_float - @hdg_pix *</Value>
+								<Scale X="1"/>
+							</Shift>
+						</Element>
+					</Element>
+					<Element>
+						<Visible>@hdg_int(20) @hdg_float - abs 15 &lt;</Visible>
+						<Element>
+							<Position X="280" Y="164"/>
+							<Clip Left="150" Right="510"/>
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+								<String>%(@hdg_int(20) dnor 10 /)%!d!</String>
+							</Text>
+							<Shift>
+								<Value>@hdg_int(20) @hdg_float - @hdg_pix *</Value>
+								<Scale X="1"/>
+							</Shift>
+						</Element>
+					</Element>
+				</Element>
+				<Element>
+					<Position X="330" Y="164"/>
+					<Clip Left="150" Right="510"/>
+					<Image Name="Heading_tape_A_00FF00.bmp" Bright="Yes">
+						<Axis X="209" Y="-38"/>
+		    			</Image>
+					<Shift>
+						<Value>@hdg_int(0) @hdg_float - @hdg_pix *</Value>
+						<Scale X="1"/>
+					</Shift>
+				</Element>
+				<Element>
+    	    				<Position X="330" Y="221"/>
+					<Image Name="Heading_pointer_A_00FF00.bmp" Bright="Yes">
+						<Axis X="15" Y="5"/>
+					</Image>
+				</Element>
+				<Shift><Value>1</Value><Scale Y="-160"/></Shift>
+			</Element>
+			<Shift><Value>1</Value><Scale Y="115"/></Shift>
+		</Element>
+	</Element>
+
+</Element>
+
+
+<!-- Virtavia Jag elements start here: -->
+<!-- Azimuth Steering Bug, HSImodes: 0= GPS WP, 1= NAV1-ILS, 2=NAV2 -->
+	   <Element>
+		<Visible>(L:HSI MODE, number) 0 == </Visible>
+		<Position X="315" Y="175"/>
+  	    <Image Name="HUD2_AzSteerBug.bmp" Bright="Yes" ImageSizes="34,35"/>
+		<Shift>
+		<Value Minimum="-25" Maximum="+25">(A:GPS WP BEARING, radians) rddg dnor (A:Plane heading degrees gyro, radians) rddg -</Value> 
+		  <Scale X="8" /> 
+		  </Shift>
+	   </Element>
+	   <Element>
+		<Visible>(L:HSI MODE, number) 1 ==</Visible>
+  	    <Position X="315" Y="175"/>
+  	    <Image Name="HUD2_AzSteerBug.bmp" Bright="Yes" ImageSizes="34,35"/>
+		<Shift>
+		<Value Minimum="-25" Maximum="+25">(A:NAV RADIAL:1, radians) pi + rddg (A:Plane heading degrees gyro, radians) rddg -</Value> 
+		  <Scale X="8" /> 
+		  </Shift>
+	   </Element>
+	   <Element>
+		<Visible>(L:HSI MODE, number) 2 ==</Visible>
+  	    <Position X="315" Y="175"/>
+  	    <Image Name="HUD2_AzSteerBug.bmp" Bright="Yes" ImageSizes="34,35"/>
+		<Shift>
+		<Value Minimum="-25" Maximum="+25">(A:NAV RADIAL:2, radians) pi + rddg (A:Plane heading degrees gyro, radians) rddg -</Value> 
+		  <Scale X="8" /> 
+		  </Shift>
+	   </Element>
+
+<!-- IAS/Mach -->
+   <Element>
+	<Position X="0" Y="165" /> 
+      <Text X="145" Y="50" Length="5" Fixed="No" Font="Arial" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((L:HUD SPEED SCALE,bool))%{if}%((A:AIRSPEED INDICATED,knots))%!03d!%{else}%( 'M' )%!s!%((A:AIRSPEED MACH,machs))%!4.2f!%{end}</String>
+      </Text>
+   </Element>
+<!-- Baro/Radio Height -->
+   <Element>
+	<Position X="555" Y="165" /> 
+      <Text X="100" Y="50" Length="5" Fixed="Yes" Font="Arial" FontSize="45" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((A:RADIO HEIGHT,feet) 1500 > )%{if}%((A:Indicated Altitude,feet))%!05d!%{else}%((A:RADIO HEIGHT,feet))%!05d!%!s!%{end}</String>
+      </Text>
+   </Element>
+   <Element>
+	<Position X="660" Y="165" /> 
+      <Text X="45" Y="50" Length="1" Fixed="Yes" Font="Arial" FontSize="45" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((A:RADIO HEIGHT,feet) 1500 > )%{if}%( 'B' )%!s!%{else}%( 'R' )%!s!%{end}</String>
+      </Text>
+   </Element>
+<!-- Ground speed -->
+   <Element>
+	<Position X="0" Y="750" /> 
+      <Text X="145" Y="50" Length="6" Fixed="No" Font="Arial" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%( 'GS ' )%!s!%((A:AIRSPEED TRUE,knots))%!03d!</String>
+      </Text>
+   </Element>
+<!-- clock -->
+   <Element>
+	<Position X="0" Y="800" /> 
+      <Text X="165" Y="45" Length="10" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((P:Local time,hours) flr 23 + 24 % 1 +)%!02d!:%((P:Local time,minutes) flr 60 %)%!02d!:%((P:Local time,seconds) flr 60 %)%!02d!%( 'L' )%!s!</String>
+      </Text>
+   </Element>
+
+<!-- Set DME/GPS WP bearing/distance readout mode -->
+<Element>
+<Select>
+	<Value>
+	(A:GPS DRIVES NAV1,bool) if{ 
+	(A:HSI BEARING VALID,bool) if{ 1 (>L:DME_Mode,number) } } 
+	els{ (A:NAV HAS NAV:2,bool) (A:NAV HAS DME:2,bool) and if{ 2 (>L:DME_Mode,number) }
+	els{ 0 (>L:DME_Mode,number) } }
+</Value>
+</Select>
+</Element>
+<!-- DME/GPS WP bearing -->
+   <Element>
+	<Position X="565" Y="750" /> 
+      <Text X="100" Y="50" Length="3" Fixed="No" Font="Arial" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+       <String>%((L:DME_Mode,number))%{case}%{:0}%((A:AUTOPILOT HEADING LOCK DIR, degrees) )%!d!%{:1}%((A:GPS WP BEARING,degrees) abs )%!s!%{:2}%((A:NAV RADIAL:2,radians) pi + rddg )%!d!%{end}</String>
+      </Text>
+   </Element>
+   <Element>
+	<Position X="623" Y="747" /> 
+      <Text X="15" Y="50" Length="2" Fixed="No" Font="Arial" FontSize="30" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>o</String>
+      </Text>
+   </Element>
+<!-- DME/GPS WP distance -->
+   <Element>
+	<Position X="565" Y="800" /> 
+      <Text X="135" Y="45" Length="7" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+       <String>%((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP NEXT ID,string))%!s!%( ' ' )%!s!%((A:GPS WP DISTANCE, nmiles))%!d!%{:2}%( 'DME ' )%!s!%((A:NAV DME:2, nmiles))%!d!%{end}</String>
+      </Text>
+   </Element>
+<!-- Kohlsman -->
+   <Element>
+	<Position X="550" Y="345" /> 
+      <Text X="135" Y="50" Length="4" Fixed="No" Font="Arial" FontSize="36" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((A:KOHLSMAN SETTING HG, mbar))%!d!</String>
+      </Text>
+   </Element>
+
+<!-- Virtavia ILS symbols -->
+<Element>
+<Visible>(L:HSI MODE, number) 1 == (A:HSI CDI needle valid,bool) &amp;&amp;</Visible>
+<Position X="330" Y="290"/>
+<Image Name="HUD2_LOC.bmp" Bright="Yes" ImageSizes="78,25"/>
+</Element>
+<Element>
+<Visible> (L:HSI MODE, number) 1 == (A:HSI GSI needle valid,bool) &amp;&amp;</Visible>
+<Position X="330" Y="290"/>
+<Image Name="HUD2_GS.bmp" Bright="Yes" ImageSizes="78,25"/>
+</Element>
+<!-- Virtavia ILS FD symbols -->
+  <Element>
+	<Visible>(L:HSI MODE, number) 1 == (A:NAV HAS NAV:1, bool) and</Visible>
+      <Position X="330" Y="290"/>
+		<Image Name="HUD2_FD1.bmp" Bright="Yes" ImageSizes="11,11">
+		<Axis X="5.5" Y="5.5"/>
+		</Image>
+               <Shift>
+  		              <Value>(A:HSI CDI needle valid,bool) if{ (A:HSI CDI needle,number) } els{ 0 }</Value>
+          		      <Scale X="0.6"/>
+          		   </Shift>
+   		           <Shift>
+  		              <Value>(A:HSI GSI needle valid,bool) if{ (A:HSI GSI needle,number) } els{ 0 }</Value>
+  		              <Scale Y="0.4"/>
+	              </Shift>
+	      <Rotate>
+			       <Value>(A:Attitude indicator bank degrees:1,radians)</Value>
+	      </Rotate>
+	</Element>
+    <Element>
+	<Visible>(L:HSI MODE, number) 1 == (A:NAV HAS NAV:1, bool) and</Visible>
+      <Position X="328" Y="325"/>
+		<Image Name="HUD2_FD2.bmp" Bright="Yes" ImageSizes="60,6">
+		<Axis X="30" Y="3"/>
+		</Image>
+               <Shift>
+                  <Value>(A:HSI CDI needle valid,bool) if{ (A:HSI CDI needle,number) 2 / (A:HSI CDI needle,number) abs 127 / * }  els{ 0 }</Value>
+                  <Scale X="0.6"/>
+               </Shift>
+                <Shift>
+                  <Value>(A:HSI GSI needle valid,bool) if{ (A:HSI GSI needle,number) 2 / (A:HSI GSI needle,number) abs 119 / * } els{ 0 }</Value>
+                  <Scale Y="0.4"/>
+               </Shift>
+	      <Rotate>
+  	       <Value>(A:Attitude indicator bank degrees:1,radians)</Value>
+	      </Rotate>
+    </Element>
+    <Element>
+	<Visible>(L:HSI MODE, number) 1 == (A:NAV HAS NAV:1, bool) and</Visible>
+      <Position X="330" Y="370"/>
+		<Image Name="HUD2_FD3.bmp" Bright="Yes" ImageSizes="112,6">
+		<Axis X="56" Y="3"/>
+		</Image>
+	      <Rotate>
+  	       <Value>(A:Attitude indicator bank degrees:1,radians)</Value>
+	      </Rotate>
+    </Element>
+
+
+</Element>
+
+
+</Gauge>

@@ -1,0 +1,124 @@
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_NavData.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0,0</FloatPosition>
+<Size>275,128</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+
+<!-- For Lago AMX gauge - display Autopilot/nav data front pnl -->
+
+<Update>
+<Frequency>1</Frequency>
+<Script>
+<!-- calculate waypoint readout -->
+	(L:DME_Mode, number) 2 == (A:NAV HAS GLIDE SLOPE:1, bool) and if{ 4 (>L:WaypointString, number) }
+	els{ (L:DME_Mode,number) (>L:WaypointString, number) } 
+</Script>
+</Update>
+
+<Element id="NavData Readout hdr">
+<FloatPosition>18,4</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool) (A:Autopilot master, bool) *</Visibility>
+	<GaugeText>
+	<Size>256,40</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>26</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<Tabs>0L,60L,130L,200L</Tabs>
+	<GaugeString>
+	%( 'SPD' )%!s!%\t%( 'VS' )%!s!%\t%( 'ALT' )%!s!%\t%( 'HDG' )%!s!
+	</GaugeString>
+	</GaugeText>
+</Element>
+
+<Element id="NavData Readout SPD">
+<FloatPosition>18,4</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool) (A:Autopilot airspeed hold, bool) * (A:Autopilot master, bool) * </Visibility>
+	<GaugeText>
+	<Size>256,40</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>26</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<Tabs>0L,60L,130L,200L</Tabs>
+	<GaugeString>
+	%\n%((A:Autopilot airspeed hold var, knots))%!03d!
+	</GaugeString>
+	</GaugeText>
+</Element>
+
+<Element id="NavData Readout VS-ALT">
+<FloatPosition>18,4</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool) (A:Autopilot altitude lock, bool) * (A:Autopilot master, bool) * </Visibility>
+	<GaugeText>
+	<Size>256,40</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>26</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<Tabs>0L,60L,130L,200L</Tabs>
+	<GaugeString>
+	%\n%\t%((A:AUTOPILOT VERTICAL HOLD VAR, feet per minute))%!04d!
+	%\t%((A:Autopilot altitude lock var, feet))%!05d!
+	</GaugeString>
+	</GaugeText>
+</Element>
+
+<Element id="NavData Readout HDG">
+<FloatPosition>18,4</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool) (A:Autopilot heading lock, bool) * (A:Autopilot master, bool) * </Visibility>
+	<GaugeText>
+	<Size>256,40</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>26</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<Tabs>0L,60L,130L,200L</Tabs>
+	<GaugeString>
+	%\n%\t%\t%\t%((A:Autopilot heading lock dir,degrees))%!03d!
+	</GaugeString>
+	</GaugeText>
+</Element>
+
+<Element id="NavData Readout wp">
+<FloatPosition>18,34</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool) (A:Autopilot master, bool) *</Visibility>
+	<GaugeText>
+	<Size>256,40</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>26</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<Tabs>0L,60L,130L,200L</Tabs>
+	<GaugeString>
+	%((L:WaypointString, number))%{case}
+	%{:0}%( ' ' )%!s!
+	%{:1}%( 'GPS:' )%!s!%((A:GPS WP NEXT ID,string))%!s!%( ' ' )%!s!%((A:GPS WP DISTANCE, nmiles))%!3.1f!
+	%{:2}%( 'VOR:' )%!s!%((A:NAV IDENT:1,string))%!s!%( ' ' )%!s!%((A:NAV DME:1, nmiles))%!3.1f!
+	%{:3}%( 'TCN:' )%!s!%((A:NAV IDENT:2,string))%!s!%( ' ' )%!s!%((A:NAV DME:2, nmiles))%!3.1f!
+	%{:4}%( 'ILS:' )%!s!%((A:NAV IDENT:1,string))%!s!%( ' ' )%!s!%((A:NAV DME:1, nmiles))%!3.1f!
+	%{end}%( 'Nm' )%!s!
+	</GaugeString>
+	</GaugeText>
+</Element>
+
+
+</SimGauge.Gauge>
+</SimBase.Document>

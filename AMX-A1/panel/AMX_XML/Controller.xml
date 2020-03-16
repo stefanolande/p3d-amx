@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Controller.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<!-- For Lago P3D AMX -->
+
+<Update>
+<Frequency>6</Frequency>
+<Script>
+(A:CABIN NO SMOKING ALERT SWITCH, bool) ! (L:INIT_CONFIG, bool) ! and if{
+
+<!-- reset fuel and fuel qty knobs -->
+	0 (>C:SIMVARS:FUEL TANK LEFT AUX LEVEL,percent) 
+	0 (>C:SIMVARS:FUEL TANK RIGHT AUX LEVEL,percent) 
+	0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)
+	0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent)
+	(>K:FUEL_SELECTOR_ALL)
+	250	(>L:knob_bingo_bug, number)
+	1 (>L:Fuel_Qty_Select0, enum)
+
+<!-- Set throttle in idle position if mixture is on, else to stop -->
+    (A:GENERAL ENG MIXTURE LEVER POSITION:1, percent) 50 &lt; if{ 0 (>L:Throttle_Stop, number) } els{ 1 (>L:Throttle_Stop, number) }
+	
+<!-- Initialize lights switches to off pos, switch off unused light channels -->
+	1 (>L:Switch_Nav-Flash, number)
+	1 (>L:Switch_LL_Taxi, number)
+	(A:LIGHT BEACON, bool) if{ (>K:TOGGLE_BEACON_LIGHTS) }
+	(A:LIGHT LANDING, bool) if{ (>K:LANDING_LIGHTS_TOGGLE) }
+	(A:LIGHT TAXI, bool) if{ (>K:TOGGLE_TAXI_LIGHTS) }
+	(A:LIGHT NAV, bool) if{ (>K:TOGGLE_NAV_LIGHTS) }
+
+<!-- Set NAV1/2 Mode knob to NAV1 VOR-ILS -->
+	1 (>L:HSI_NAV_SourceSwitch, bool)
+
+<!-- Set ASI Airspeed bug -->
+    205 (>L:AirspeedBug, enum)
+
+<!-- Refill Oxygen max fill 5 liters x 10 -->
+	1 (>L:OxyQtySwitch, bool)
+
+	25 (&gt;L:HUD_Coll_Pitch, number)
+
+<!-- Open Loadout panel -->
+	10001 (>K:PANEL_ID_OPEN)  
+
+    (>K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE)
+	(A:CABIN NO SMOKING ALERT SWITCH, bool) if{ 1 (>L:INIT_CONFIG, bool) } }
+<!-- END Initialization -->
+
+
+
+<!-- Cuts out starter after engine is ignited -->
+     (A:GENERAL ENG COMBUSTION:1, bool) (A:GENERAL ENG STARTER:1,bool) and if{ (>K:TOGGLE_STARTER1) }
+
+<!-- ENG 1 smoke -->
+   (A:TURB ENG1 N1,percent) 70 &gt; &amp;&amp;
+   (A:TURB ENG AFTERBURNER:1,bool) 0 == (A:TURB ENG N2:1,percent) 65 > and
+   (A:GENERAL ENG THROTTLE LEVER POSITION:1,percent) 30 > and
+   (A:INDICATED ALTITUDE,feet) 20000 &lt; and
+   if{ (A:SMOKE ENABLE:1,bool) ! if{ 1 (>K:SMOKE_ON) } } 
+   els{ (A:SMOKE ENABLE:1,bool) if{ 1 (>K:SMOKE_OFF) } }
+
+<!-- Controlled refuel linked to Config Mgr switch -->
+	(L:switch_probe_refuel, bool) if{ 
+	(A:FUEL TANK CENTER LEVEL,percent) 0.1 + 20 max 100 min (>C:SIMVARS:FUEL TANK CENTER LEVEL,percent)
+	(A:FUEL TANK LEFT MAIN LEVEL,percent) 0.3 + 20 max 100 min (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent)
+	(A:FUEL TANK RIGHT MAIN LEVEL,percent) 0.3 + 20 max 100 min (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent)
+	(A:FUEL TANK CENTER LEVEL,percent) 99.6 > if{ 0 (>L:switch_probe_refuel, bool) } }
+
+</Script>
+</Update>
+
+<Update>
+<Frequency>1</Frequency>
+<Script>
+<!-- Master Caution light -->
+	(A:ELECTRICAL MASTER BATTERY,bool) if{ 
+    (A:ENG OIL PRESSURE:1, psi) 20 &lt; or
+    (A:GENERAL ENG MASTER ALTERNATOR:1,bool) 0 == or
+	(A:FUEL TOTAL QUANTITY,gallon) 50 &lt; or
+	(A:GENERAL ENG EXHAUST GAS TEMPERATURE:1,celsius) 750 &gt; or
+	(A:EXIT OPEN:0,percent) 5 &gt; or
+	(L:Warn_Fuel_Bingo, bool) or
+	(A:FUEL TOTAL QUANTITY,gallon) 50 &lt; or
+	if{ 1 (>L:light_master_caution, bool) } els{ 0 (>L:light_master_caution, bool) } }
+
+<!-- Jettison stores -->
+	(L:switch_jettison, number) 1 == if{ 
+	0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) 0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds) 0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:3,pounds) 0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:4,pounds)
+	0 (>C:SIMVARS:FUEL TANK LEFT AUX LEVEL,percent) 0 (>C:SIMVARS:FUEL TANK RIGHT AUX LEVEL,percent) 0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent) 0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent)
+	0 (>L:ROW_55,number) 0 (>L:ROW_80,number) 0 (>L:ROW_105,number) 0 (>L:ROW_130,number)  }
+
+</Script>
+</Update>
+
+<Update>
+<Frequency>2</Frequency>
+<Script>
+<!-- ext nav lights 0=flash, 1=off, 2=steady -->
+	(L:Switch_Nav-Flash, number) 0 == if{ (L:Light_Ext, bool) ! (>L:Light_Ext, bool) } els{ 
+	(L:Switch_Nav-Flash, number) 2 == if{ 1 (>L:Light_Ext, bool) } els{ 0 (>L:Light_Ext, bool) } }
+</Script>
+</Update>
+
+</SimGauge.Gauge>
+</SimBase.Document>

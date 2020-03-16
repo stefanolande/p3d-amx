@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_FuelQty.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+
+<Comment>
+For Lago AMX FuelQty gauge - units = Kg. Default readout fuse cell = CENTER
+
+Fuel_Qty_Selected buttons:
+ 0= default, show fuselage tank CENTER
+ 1= LW, show left wing tank LEFT MAIN
+ 2= RW, show right wing tank RIGHT MAIN
+ 3= LUW, show left underwing tank EXTERNAL1 (seems outb droptanks LEFT AUX /RIGHT AUX are not shown)
+ 4= RUW, show right underwing tank EXTERNAL2
+
+Warning LL FUEL: below 300 Kg - 99 Gallon
+
+</Comment>
+
+<FloatPosition>0,0</FloatPosition>
+<Size>100,40</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+
+<Update>
+<Frequency>1</Frequency>
+<Script>
+<!-- calculate display qty -->
+  (L:Fuel_Qty_Select0, enum) (A:FUEL TANK CENTER QUANTITY, gallons) * 
+  (L:Fuel_Qty_Select1, enum) (A:FUEL TANK LEFT MAIN QUANTITY, gallons) * +
+  (L:Fuel_Qty_Select2, enum) (A:FUEL TANK RIGHT MAIN QUANTITY, gallons) * +
+  (L:Fuel_Qty_Select3, enum) (A:FUEL TANK EXTERNAL1 QUANTITY, gallons) * +
+  (L:Fuel_Qty_Select4, enum) (A:FUEL TANK EXTERNAL2 QUANTITY, gallons) * + 3.0418 * (>L:Fuel_Qty_Readout, enum)
+
+<!-- calculate bingo warning light state: bingo knob bug range 0 - 360 = 0 - 2000 Kg -->
+	(A:FUEL TANK CENTER QUANTITY, gallon) 0.547524 * (L:knob_bingo_bug, number) &lt; (&gt;L:Warn_Fuel_Bingo, bool)
+
+</Script>
+</Update>
+
+
+
+<Element id="FuelQty Readout">
+<FloatPosition>17,8</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="TGT Readout">
+	<Size>75,30</Size>
+	<Length>4</Length>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>30</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%( (L:Fuel_Qty_Readout, enum) )%!04d!</GaugeString>
+	</GaugeText>
+</Element>
+
+</SimGauge.Gauge>
+</SimBase.Document>

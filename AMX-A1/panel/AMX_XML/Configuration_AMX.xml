@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Payload_Mgr.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0.000,0.000</FloatPosition>
+<Size>410,475</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+<!-- For Alpha A-6E, requires XMLTools. MDL viscon uses payload station ranges -->
+<!-- HEADER/INFOBLOCK -->
+<Element id="HEADER">
+	<FloatPosition>100,7</FloatPosition>
+	<GaugeText id="HEADER"> <FontFace>Arial</FontFace> <FontColor>Lime</FontColor> <FontHeight>18</FontHeight> <Size>200,18</Size> <Luminous>true</Luminous> <HorizontalAlign>LEFT</HorizontalAlign> 
+	<GaugeString>CONFIGURATION MANAGER</GaugeString></GaugeText>
+</Element>
+<Element id="INFOBLOCK">
+	<FloatPosition>210,30</FloatPosition>
+	<GaugeText id="Infoblock1"> <FontFace>Arial</FontFace> <FontColor>Yellow</FontColor> <FontHeight>16</FontHeight> <Size>200,120</Size> <Luminous>true</Luminous> <HorizontalAlign>LEFT</HorizontalAlign> <Tabs>0,85</Tabs> <GaugeString>
+	%((A:TITLE,string))%!s!%\n
+	%( 'Gross Weight ' )%!s!%\t%((A:TOTAL WEIGHT,pounds) )%!5d!%( '  Lbs' )%!s!%\n
+	%( 'Max Weight ' )%!s!%\t%((A:MAX GROSS WEIGHT,pounds) )%!5d!%( '  Lbs' )%!s!%\n
+	%( 'Payload ' )%!s!%\t%((A:TOTAL WEIGHT,pounds) (A:EMPTY WEIGHT,pounds) - (A:FUEL TOTAL QUANTITY WEIGHT,pounds) - )%!5d!%( '  Lbs' )%!s!%\n
+	%( 'Fuel ' )%!s!%\t%((A:FUEL TOTAL QUANTITY,gallon) )%!5d!%( '  Gallon' )%!s!%\n
+	%((A:TOTAL WEIGHT,pounds) (A:MAX GROSS WEIGHT,pounds) - 0 &gt; )%{if} \{rev}%( ' Overweight ' )%!s!%\t%((A:TOTAL WEIGHT,pounds) (A:MAX GROSS WEIGHT,pounds) - )%!5d!%( '  Lbs ' )%!s!%\{nr}%{end}
+	</GaugeString></GaugeText>
+</Element>
+<Element id="CLOSE_PANEL">
+	<FloatPosition>380,5</FloatPosition>
+	<Image Name="Close.bmp" />
+</Element>
+
+<!-- ORDNANCE  ================== -->
+<Element id="ROW_30">
+	<FloatPosition>10,30</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Internal Fuel ' )%!s!%\t\{rev}%((L:ROW_30,number))%{case}
+	%{:0} Full
+	%{:1} Half
+	%{end}</GaugeString></GaugeText>
+</Element>
+<Element id="ROW_55">
+	<FloatPosition>10,55</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Center Sta  ' )%!s!%\t\{rev}%((L:ROW_55,number))%{case}
+	%{:0} --- 
+	%{:1} Orpheus 
+	%{:2} Mk82 
+	%{end}</GaugeString></GaugeText>
+</Element>
+<Element id="ROW_80">
+	<FloatPosition>10,80</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Wing Inb ' )%!s!%\t\{rev}%((L:ROW_80,number))%{case}
+	%{:0} --- 
+	%{:1} Tanks 
+	%{:2} Mk82 
+	%{:3} Mk84 
+	%{end}</GaugeString></GaugeText>
+</Element>
+<Element id="ROW_105">
+	<FloatPosition>10,105</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Wing Outb ' )%!s!%\t\{rev}%((L:ROW_105,number))%{case}
+	%{:0} --- 
+	%{:1} Tanks 
+	%{end}</GaugeString></GaugeText>
+</Element>
+
+<Element id="ROW_130">
+	<FloatPosition>10,130</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Tips ' )%!s!%\t\{rev}%((L:ROW_130, Number))%{case}
+	%{:0} --- 
+	%{:1} AIM-9 
+	%{end}</GaugeString></GaugeText>
+</Element>
+
+
+<Element id="CREW_OFF">
+	<FloatPosition>210,160</FloatPosition>
+	<Visibility>(A:WATER RUDDER HANDLE POSITION, percent) 50 &gt; (A:SIM ON GROUND, bool) * </Visibility>
+	<Image id="Lamp_off" Name="L_Lamp_Off.bmp">
+    <Bright>false</Bright>
+    </Image>
+</Element>
+<Element id="CREW_ON">
+	<FloatPosition>210,160</FloatPosition>
+	<Visibility>(A:WATER RUDDER HANDLE POSITION, percent) 50 &lt; </Visibility>
+	<Image id="Lamp_on" Name="L_Lamp_Green.bmp">
+    <Bright>true</Bright>
+    </Image>
+</Element>
+<Element id="CREW_LABEL">
+	<FloatPosition>245,161</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Crew ' )%!s!%
+	</GaugeString></GaugeText>
+</Element>
+
+<Element id="CHOCKS_OFF">
+	<FloatPosition>210,190</FloatPosition>
+	<Visibility>(L:GRND_CHOCKS_LADDER, bool) 0 ==</Visibility>
+	<Image id="Lamp_off" Name="L_Lamp_Off.bmp">
+    <Bright>false</Bright>
+    </Image>
+</Element>
+<Element id="CHOCKS_ON">
+	<FloatPosition>210,190</FloatPosition>
+	<Visibility>(L:GRND_CHOCKS_LADDER, bool)</Visibility>
+	<Image id="Lamp_on" Name="L_Lamp_Green.bmp">
+    <Bright>true</Bright>
+    </Image>
+</Element>
+<Element id="CHOCKS_LABEL">
+	<FloatPosition>245,191</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Wheel Chocks ' )%!s!%
+	</GaugeString></GaugeText>
+</Element>
+
+<Element id="COLD_DARK_OFF">
+	<FloatPosition>210,220</FloatPosition>
+	<Visibility>(L:COLD_DARK, bool) 0 ==</Visibility>
+	<Image id="Lamp_off" Name="L_Lamp_Off.bmp">
+    <Bright>false</Bright>
+    </Image>
+</Element>
+<Element id="COLD_DARK_ON">
+	<FloatPosition>210,220</FloatPosition>
+	<Visibility>(L:COLD_DARK, bool)</Visibility>
+	<Image id="Lamp_on" Name="L_Lamp_Green.bmp">
+    <Bright>true</Bright>
+    </Image>
+</Element>
+<Element id="COLD_DARK_LABEL">
+	<FloatPosition>245,221</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Cold and Dark ' )%!s!%
+	</GaugeString></GaugeText>
+</Element>
+
+<Element id="READY2FLY_OFF">
+	<FloatPosition>210,250</FloatPosition>
+	<Visibility>(L:READY2FLY, bool) 0 ==</Visibility>
+	<Image id="Lamp_off" Name="L_Lamp_Off.bmp">
+    <Bright>false</Bright>
+    </Image>
+</Element>
+<Element id="READY2FLY_ON">
+	<FloatPosition>210,250</FloatPosition>
+	<Visibility>(L:READY2FLY, bool)</Visibility>
+	<Image id="Lamp_on" Name="L_Lamp_Green.bmp">
+    <Bright>true</Bright>
+    </Image>
+</Element>
+<Element id="READY2FLY_LABEL">
+	<FloatPosition>245,251</FloatPosition>
+	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
+	%( 'Ready to Fly ' )%!s!%
+	</GaugeString></GaugeText>
+</Element>
+
+
+
+<!-- MOUSE AREA ========================================================== -->
+<MouseArea id="MouseArea">
+<FloatPosition>0.000,0.000</FloatPosition>
+<Size>410,475</Size>
+<CursorType>None</CursorType>
+
+<!-- ORDNANCE ================== -->
+<MouseArea id="ROW_30">
+	<FloatPosition>70,30</FloatPosition><Size>50,20</Size><CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Internal Fuel Load</DefaultScript></Tooltip>
+	<MouseClick id="MouseClick">
+	<ClickType>LeftSingle+RightSingle</ClickType>
+	<Script>
+	(L:ROW_30, Number) ++ (&gt;L:ROW_30, Number)
+	(L:ROW_30, Number) 1 &gt; if{ 0 (&gt;L:ROW_30, Number) }
+	(L:ROW_30, Number) 0 == if{ 100 (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent) }
+	(L:ROW_30, Number) 1 == if{  50 (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent)  50 (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent) }
+	</Script>
+	</MouseClick>
+</MouseArea>
+
+<MouseArea id="ROW_55">
+	<FloatPosition>70,55</FloatPosition><Size>50,20</Size><CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Center Station</DefaultScript></Tooltip>
+	<MouseClick id="MouseClick">
+	<ClickType>LeftSingle+RightSingle</ClickType>
+	<Script>
+	(L:ROW_55, Number) ++ (&gt;L:ROW_55, Number)
+	(L:ROW_55, Number) 2 &gt; if{ 0 (&gt;L:ROW_55, Number) }
+	(L:ROW_55, Number) 0 == if{    0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
+	(L:ROW_55, Number) 1 == if{ 1000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
+	(L:ROW_55, Number) 2 == if{  500 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
+	</Script>
+	</MouseClick>
+</MouseArea>
+
+<MouseArea id="ROW_80">
+	<FloatPosition>70,80</FloatPosition><Size>50,20</Size><CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Wing Inboard Stations</DefaultScript></Tooltip>
+	<MouseClick id="MouseClick">
+	<ClickType>LeftSingle+RightSingle</ClickType>
+	<Script>
+	(L:ROW_80, Number) ++ (&gt;L:ROW_80, Number)
+	(L:ROW_80, Number) 3 &gt; if{ 0 (&gt;L:ROW_80, Number) }
+	(L:ROW_80, Number) 0 == if{    0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
+	(L:ROW_80, Number) 1 == if{  300 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds) 100 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
+	(L:ROW_80, Number) 2 == if{ 1000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
+	(L:ROW_80, Number) 3 == if{ 4000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
+	</Script>
+	</MouseClick>
+</MouseArea>
+<MouseArea id="ROW_105">
+	<FloatPosition>70,105</FloatPosition><Size>50,20</Size><CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Wing Outboard Stations</DefaultScript></Tooltip>
+	<MouseClick id="MouseClick">
+	<ClickType>LeftSingle+RightSingle</ClickType>
+	<Script>
+	(L:ROW_105, Number) ++ (&gt;L:ROW_105, Number)
+	(L:ROW_105, Number) 1 &gt; if{ 0 (&gt;L:ROW_105, Number) }
+	(L:ROW_105, Number) 0 == if{    0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:3,pounds)   0 (>C:SIMVARS:FUEL TANK LEFT AUX LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK RIGHT AUX LEVEL,percent) }
+	(L:ROW_105, Number) 1 == if{  300 (>C:SIMVARS:PAYLOAD STATION WEIGHT:3,pounds) 100 (>C:SIMVARS:FUEL TANK LEFT AUX LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK RIGHT AUX LEVEL,percent) }
+	</Script>
+	</MouseClick>
+</MouseArea>
+
+<MouseArea id="ROW_130">
+	<FloatPosition>70,130</FloatPosition><Size>50,20</Size><CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Wingtip A2A Rails</DefaultScript></Tooltip>
+	<MouseClick id="MouseClick">
+	<ClickType>LeftSingle+RightSingle</ClickType>
+	<Script>
+	(L:ROW_130,Number) ++ (&gt;L:ROW_130, Number)
+	(L:ROW_130,Number) 1 &gt; if{ 0 (&gt;L:ROW_130,Number) }
+	(L:ROW_130,Number) 0 == if{   0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:4,pounds) }
+	(L:ROW_130,Number) 1 == if{ 380 (>C:SIMVARS:PAYLOAD STATION WEIGHT:4,pounds) }
+	</Script>
+	</MouseClick>
+</MouseArea>
+
+<MouseArea id="CREW">
+	<FloatPosition>210,160</FloatPosition>
+	<Size>30,30</Size>
+	<CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Crew</DefaultScript></Tooltip>
+	<MouseClick><Script>
+	(>K:TOGGLE_WATER_RUDDER)
+	</Script></MouseClick>
+ </MouseArea>
+<MouseArea id="CHOCKS">
+	<FloatPosition>210,190</FloatPosition>
+	<Size>30,30</Size>
+	<CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Chocks</DefaultScript></Tooltip>
+	<MouseClick><Script>
+	(L:GRND_CHOCKS_LADDER, bool) ! (>L:GRND_CHOCKS_LADDER, bool)
+	</Script></MouseClick>
+ </MouseArea>
+<MouseArea id="COLD-DARK">
+	<FloatPosition>210,220</FloatPosition>
+	<Size>30,30</Size>
+	<CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Cold and Dark</DefaultScript></Tooltip>
+	<MouseClick><Script>
+	(L:COLD_DARK, bool) ! (>L:COLD_DARK, bool)
+	(L:COLD_DARK, bool) if{
+	0 (>L:READY2FLY, bool)
+    (>K:MIXTURE1_LEAN)
+	0 (>L:Throttle_Stop, number)
+	(A:WATER RUDDER HANDLE POSITION, percent) 50 &lt; if{ (>K:TOGGLE_WATER_RUDDER) }
+	1 (>L:GRND_CHOCKS_LADDER, bool)
+	0 (>K:AVIONICS_MASTER_SET)
+	(A:ELECTRICAL MASTER BATTERY, bool) if{ (>K:TOGGLE_MASTER_BATTERY) }
+	(A:GENERAL ENG FUEL VALVE:1, bool) if{ (>K:TOGGLE_FUEL_VALVE_ENG1) }
+	(L:Fuel_Valve1_Guard, bool) ! if{ 1 (>L:Fuel_Valve1_Guard, bool) }
+	(A:GENERAL ENG FUEL PUMP SWITCH:1, bool) if{ 0 (>K:FUEL_PUMP) }
+	(A:Hydraulic Switch:1, bool) if{ (>K:HYDRAULIC_SWITCH_TOGGLE) }
+	(A:ANTISKID BRAKES ACTIVE, bool) if{ (>K:ANTISKID_BRAKES_TOGGLE) }
+	(A:APU PCT RPM, percent) 10 &gt; if{ (>K:APU_OFF_SWITCH) }
+	(A:PITOT HEAT, bool) if{ (>K:PITOT_HEAT_TOGGLE) }
+	(A:GENERAL ENG GENERATOR SWITCH:1, bool) if{ (>K:TOGGLE_MASTER_ALTERNATOR) }
+	1 (>L:Switch_Nav-Flash, number)
+	1 (>L:Switch_LL_Taxi, number)
+	(A:LIGHT BEACON, bool) if{ (>K:TOGGLE_BEACON_LIGHTS) }
+	(A:LIGHT WING, bool) if{ (>K:TOGGLE_WING_LIGHTS) }
+	(A:LIGHT CABIN, bool) if{ (>K:TOGGLE_CABIN_LIGHTS) }
+	(A:LIGHT RECOGNITION, bool) if{ (>K:TOGGLE_RECOGNITION_LIGHTS) }
+	(A:LIGHT PANEL, bool) if{ (>K:PANEL_LIGHTS_TOGGLE) }
+	0 (>L:OxyQtySwitch, bool)
+	} 
+	</Script></MouseClick>
+ </MouseArea>
+<MouseArea id="READY2FLY">
+	<FloatPosition>210,250</FloatPosition>
+	<Size>30,30</Size>
+	<CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Ready to Fly</DefaultScript></Tooltip>
+	<MouseClick><Script>
+	(L:READY2FLY, bool) ! (>L:READY2FLY, bool)
+	(L:READY2FLY, bool) if{
+	0 (>L:COLD_DARK, bool)
+    (>K:MIXTURE1_RICH)
+	1 (>L:Throttle_Stop, number)
+	(A:WATER RUDDER HANDLE POSITION, percent) 50 &gt; if{ (>K:TOGGLE_WATER_RUDDER) }
+	0 (>L:GRND_CHOCKS_LADDER, bool)
+	1 (>K:AVIONICS_MASTER_SET)
+	(A:ELECTRICAL MASTER BATTERY, bool) ! if{ (>K:TOGGLE_MASTER_BATTERY) }
+	(A:GENERAL ENG FUEL VALVE:1, bool) ! if{ (>K:TOGGLE_FUEL_VALVE_ENG1) }
+	(L:Fuel_Valve1_Guard, bool) if{ 0 (>L:Fuel_Valve1_Guard, bool) }
+	(A:GENERAL ENG FUEL PUMP SWITCH:1, bool) ! if{ 0 (>K:FUEL_PUMP) }
+	(A:Hydraulic Switch:1, bool) ! if{ (>K:HYDRAULIC_SWITCH_TOGGLE) }
+	(A:ANTISKID BRAKES ACTIVE, bool) ! if{ (>K:ANTISKID_BRAKES_TOGGLE) }
+	(A:PITOT HEAT, bool) ! if{ (>K:PITOT_HEAT_TOGGLE) }
+	(A:GENERAL ENG GENERATOR SWITCH:1, bool) ! if{ (>K:TOGGLE_MASTER_ALTERNATOR) }
+	(A:LIGHT BEACON, bool) ! if{ (>K:TOGGLE_BEACON_LIGHTS) }
+	2 (>L:Switch_Nav-Flash, number)
+	(E:TIME OF DAY, enum) 1 != (A:LIGHT PANEL, bool) 0 == and if{ (>K:PANEL_LIGHTS_TOGGLE) }
+	1 (>L:OxyQtySwitch, bool)
+	}
+	</Script></MouseClick>
+ </MouseArea>
+
+
+<MouseArea id="CLOSE_PANEL">
+	<FloatPosition>380,5</FloatPosition>
+	<Size>30,30</Size>
+	<CursorType>Hand</CursorType>
+	<Tooltip><DefaultScript>Close Load Mgr</DefaultScript></Tooltip>
+	<MouseClick><Script>
+	10001 (>K:PANEL_ID_CLOSE)
+	</Script></MouseClick>
+</MouseArea>
+
+</MouseArea>
+</SimGauge.Gauge>
+</SimBase.Document>	

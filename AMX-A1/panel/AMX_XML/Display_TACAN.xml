@@ -1,0 +1,42 @@
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_TACAN.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0,0</FloatPosition>
+<Size>150,30</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+<!-- For Lago AMX gauge - display TACAN ch right console -->
+
+<Update>
+<Frequency>9</Frequency>
+<Script>
+<!-- TACAN: Slave TACAN CH Display to active NAV2 Freq -->
+  (L:ACTIVE,enum) (A:NAV ACTIVE FREQUENCY:2,Mhz) 10 * !=  if{ 
+	(A:NAV ACTIVE FREQUENCY:2,Mhz) 10 * (&gt;L:ACTIVE,enum)
+
+    (L:ACTIVE,enum) (L:ACTIVE,enum) flr - 0 == if{ 0 (>L:TacanXY, bool) } els{ 1 (>L:TacanXY, bool) }
+
+    (L:ACTIVE,enum) 1122.5 > if{ (L:ACTIVE,enum) 1053 - (>L:TacanChannel,enum) } els{ (L:ACTIVE,enum) 1063 - (>L:TacanChannel,enum) }
+  } 
+</Script>
+</Update>
+
+<Element id="TACAN Readout">
+<FloatPosition>15.0,1.0</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="Com2 Readout">
+	<Size>150,30</Size>
+	<Length>4</Length>
+	<Bright>False</Bright>
+	<FontFace>Arial</FontFace>
+	<FontColor>#c0c0c0</FontColor>
+	<FontHeight>50</FontHeight>
+	<Bold>false</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%((L:TacanChannel, enum))%!03.0f!%((L:TacanXY, bool))%{if}Y%{else}X%{end}%( ' ' )%!s!</GaugeString>
+	</GaugeText>
+</Element>
+</SimGauge.Gauge>
+</SimBase.Document>
+

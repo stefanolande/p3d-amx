@@ -1,0 +1,27 @@
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_NAV2.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0,0</FloatPosition>
+<Size>150,30</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+
+<!-- For Lago AMX gauge - display NAV freq left console -->
+<Element id="Nav2 Readout">
+<FloatPosition>22,2</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="Com2 Readout">
+	<Size>150,30</Size>
+	<Bright>false</Bright>
+	<FontFace>Arial</FontFace>
+	<FontColor>#c0c0c0</FontColor>
+	<FontHeight>35</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%((A:NAV ACTIVE FREQUENCY:2, MHz))%!3.2f!</GaugeString>
+	</GaugeText>
+</Element>
+
+</SimGauge.Gauge>
+</SimBase.Document>

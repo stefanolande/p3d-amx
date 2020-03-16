@@ -1,0 +1,45 @@
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_COM1.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0,0</FloatPosition>
+<Size>175,150</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+
+<!-- For Lago AMX gauge - display Com freqs front pnl -->
+<Element id="Com1 Readout">
+<FloatPosition>25,28</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="Com2 Readout">
+	<Size>175,30</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>30</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%((A:COM ACTIVE FREQUENCY:1, MHz))%!3.3f!</GaugeString>
+	</GaugeText>
+</Element>
+
+<!--
+<Element id="ADF Readout">
+<FloatPosition>25,90</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="Com2 Readout">
+	<Size>175,30</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>30</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%((A:ADF ACTIVE FREQUENCY:1, KHz))%!3.2f!</GaugeString>
+ </GaugeText>
+</Element>
+-->
+
+</SimGauge.Gauge>
+</SimBase.Document>

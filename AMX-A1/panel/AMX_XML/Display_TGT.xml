@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_TGT.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0,0</FloatPosition>
+<Size>175,70</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+
+<!-- For Lago AMX TGT gauge - display EGT celcius -->
+<Element id="TGT Readout">
+<FloatPosition>0,0</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="TGT Readout">
+	<Size>175,70</Size>
+	<Length>3</Length>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>70</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%( (A:GENERAL ENG EXHAUST GAS TEMPERATURE:1, celsius) 1.000 * )%!03d!</GaugeString>
+	</GaugeText>
+</Element>
+
+<!--
+Important: the vcpanel polygon must have equal height and width. In Blender, place the upper left corner of the polygon above the upper left corner of the gauge display
+FontHeight	Height of the characters in pixels.
+Size		Two integers, the width and height of the text box in pixels.
+Length		The maximum number of characters in the string to display.
+Transparent	Set to True if the text is not to be displayed with a surrounding rectangle of the background color.
+WidthFit	Set to True if the text should be expanded to fit the width of the text box. DOES NOT WORK 
+Larger size values maker text appear smaller, larger FontHeight make text appear larger
+
+
+<Frequency>9</Frequency>
+
+-->
+</SimGauge.Gauge>
+</SimBase.Document>
