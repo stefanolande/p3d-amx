@@ -1,0 +1,238 @@
+_________________________________________________________________
+    BEFORE EXTERIOR INSPECTION
+
+ 1. Aircraft form ………………………… Check status
+ 2. Canopy …………………………………………… Safe for parking
+ 3. BATT ………………………………………………… OFF
+ 4. Parking handle ……………………… Fully extracted
+ 5. LDG GR lever …………………………… DOWN
+ 6. MASTER ARMT ……………………………… SAFE
+ 7. THROTTLE ……………………………………… STOP
+
+_________________________________________________________________
+    EXTERIOR INSPECTION
+
+
+ 1. Left pitot probe …………………………………… Cover removed, condition
+ 2. AOA probe ……………………………………………………… Cover removed, condition
+ 3. Formation light ……………………………………… Condition
+ 4. Antennas ………………………………………………………… Condition
+ 5. Nose wheel and leg assembly ……… Check general condition
+ 6. Nose wheel bay ………………………………………… Condition
+ 7. Flight refuelling probe ………………… Condition
+ 8. Pitot probe ………………………………………………… Cover removed, condition
+ 9. Temperature probe ………………………………… Cover removed, condition
+10. Formation light ……………………………………… Condition
+11. Vent valve intake ………………………………… Blank removed, condition
+12. Engine air intake ………………………………… Blank removed, condition
+13. Navigation light …………………………………… Condition
+14. Lower wing skin ……………………………………… Condition
+15. Pylons ……………………………………………………………… Condition
+16. Slat …………………………………………………………………… Condition
+17. Formation lights (2) ………………………… Condition
+18. Launcher ………………………………………………………… Condition (if installed)
+19. Aileron …………………………………………………………… Condition
+20. Fuel vent port ………………………………………… Condition
+21. Flap …………………………………………………………………… Condition
+22. Landing gear assembly ……………………… Check general condition
+23. Landing gear bay …………………………………… Condition
+24. APU exhaust duct …………………………………… Condition
+25. APU intakes ………………………………………………… Blank removed, condition
+26. Heat exchanger intakes …………………… Blank removed, condition
+27. Vertical fin right side ………………… Condition
+28. Stabilizer sliding cover ……………… Condition
+29. Stabilizer …………………………………………………… Condition
+30. Elevator ………………………………………………………… Condition
+31. IDG intakes ………………………………………………… Check condition
+32. Rudder ……………………………………………………………… Condition
+33. Jet pipe ………………………………………………………… Blank removed, condition
+34. Arresting hook ………………………………………… Check condition	
+35. Elevator ………………………………………………………… Condition
+36. Stabilizer …………………………………………………… Condition
+37. Ext.canopy lock/unlock lever …… Stowed
+38. ECS inlet ……………………………………………………… Blank removed, condition
+39. ECS outlet …………………………………………………… Blank removed, condition
+
+
+_________________________________________________________________
+    PRELIMINARY CHECKS
+
+ 1. Personal connections
+    (radio, oxygen, anti-g) ………………… Connected
+ 2. AIR MASTER …………………………………………………… ON, guarded
+ 3. BATT …………………………………………………………………… ON
+ 4. Ejection seat …………………………………………… Check. Adjust and strap-in
+ 5. Rudder pedals …………………………………………… Adjust
+ 6. Take/give panel ……………………………………… As required
+ 7. APU GEN (if installed) …………………… OFF/RESET
+
+
+
+_________________________________________________________________
+    BEFORE ENGINE START
+
+ 1. Canopy ……………………………………………………………… Closed and locked
+ 2. FLAP lever …………………………………………………… Set to actual position
+ 3. THROTTLE ………………………………………………………… Check STOP
+ 4. Engine control panel ………………………… Check 
+ 5. LDG GR lever ……………………………………………… Check DOWN, three greens
+ 6. SALVO JETT …………………………………………………… Covered
+ 7. Take/give panel ……………………………………… Check
+ 8. Flight instruments ……………………………… Check and set
+ 9. FUEL …………………………………………………………………… Test, check quantity, 
+10. Clock ………………………………………………………………… Check
+
+
+
+_________________________________________________________________
+    ENGINE START
+
+ 1. External air supply……………………………… Confirmed (ground crew)
+ 2. FUEL …………………………………………………………………… ON
+ 3. ENG ……………………………………………………………………… START
+ 4. THROTTLE ………………………………………………………… START
+ 5. Fuel flow ……………………………………………………… 4 – 8 kg/min
+ 6. TGT ……………………………………………………………………… Increasing (353°C max)
+ 7. START lamp …………………………………………………… Check out above 43% NH
+ 8. OIL LP warning lamp …………………………… Check out. If not at IDLE RPM set THROTTLE 
+                                    to STOP
+ 9. RPM ……………………………………………………………………… Stabilized (53-57% NH)
+10. THROTTLE ………………………………………………………… IDLE
+11. Engine checks:
+    - RPM ………………………………………………………………… 51.5 – 55% NH
+    - TGT ………………………………………………………………… 585°C max
+    - Fuel flow ………………………………………………… 6 – 7 kg/min
+12. Flap Bite ……………………………………………………… As required
+13. Normal pitch trim switch ……………… Check effectiveness 
+14. Manoeuvre flap ………………………………………… Cycle
+15. FLAP lever …………………………………………………… Cycle, set to DOWN 1 or DOWN 2
+16. Airbrakes ……………………………………………………… Check
+17. Normal trims ……………………………………………… Set for takeoff  (~5° nose up clean aircraft)
+18. Radar altimeter ……………………………………… On
+19. Flight instruments ……………………………… Check
+20. External lights ……………………………………… As required
+
+
+_________________________________________________________________
+    BEFORE TAXI
+
+ 
+ 1. Altimeter/HUD …………………………………………… Set and check
+ 2. Seat firing pin ……………………………………… Remove, show and stow
+ 3. Taxi light …………………………………………………… As required
+ 4. Chocks ……………………………………………………………… Removed
+ 5. Flight controls ……………………………………… Full and free
+ 6. Parking handle ………………………………………… Release
+ 7. Brakes ……………………………………………………………… Check
+
+
+_________________________________________________________________
+    BEFORE TAKE OFF
+
+ 1. FLAP lever …………………………………………………… As required
+ 2. Airbrakes ……………………………………………………… In, check AIR BRK indicator lamp out
+ 3. Trims ………………………………………………………………… Check for takeoff (~ 5° nose up clean aircraft)
+ 4. Seat harnesses ………………………………………… Tighted and locked
+ 5. Seat firing pin ……………………………………… Check removed
+ 6. Canopy ……………………………………………………………… Closed and locked
+
+
+_________________________________________________________________
+    LINE UP
+
+ 1. THROTTLE ………………………………………………………… MAX
+ 2. Engine checks:
+    - RPM ………………………………………………………………… 94% NH Min
+                                    101%NH Max
+                                    105% NL Max
+
+
+_________________________________________________________________
+    TAKE OFF
+
+ 1. ANTI-ICE PROBES ……………………………………… ON
+ 2. Brakes ……………………………………………………………… Release
+ 3. Engine instruments ……………………………… Check
+
+
+_________________________________________________________________
+    AFTER TAKEOFF
+
+ 1. LDG GR lever ……………………………………………… UP, lamps out
+ 2. FLAP lever …………………………………………………… As required
+ 
+
+
+_________________________________________________________________
+    CLIMB/CRUISE
+
+ 1. Engine RPM …………………………………………………… Set for climb/cruise
+ 2. Altimeters …………………………………………………… As required
+ 3. Fuel …………………………………………………………………… Check
+
+
+_________________________________________________________________
+    DESCENT
+
+ 1. Flight/Nav instruments …………………… Set
+ 2. Altimeters …………………………………………………… Set
+ 3. Radar altimeter ……………………………………… Set bug as required
+ 4. Fuel quantity …………………………………………… Check
+
+
+_________________________________________________________________
+    PRE-LANDING CHECKS
+
+ 1. FLAP lever …………………………………………………… As required
+ 2. Harnesses ……………………………………………………… Tight and locked
+ 3. LDG GR lever ……………………………………………… DOWN (3 greens, red out)
+ 4. Landing lights ………………………………………… As required
+ 
+
+_________________________________________________________________
+    AFTER TOUCHDOWN
+
+ 1. THROTTLE ………………………………………………………… IDLE
+ 2. Steering ………………………………………………………… As necessary
+
+
+_________________________________________________________________
+    TOUCH AND GO
+
+ 1. Maintain direction using rudder
+ 2. THROTTLE ………………………………………………………… MAX
+ 3. Trims ………………………………………………………………… As required
+ 4. Use normal takeoff technique
+
+
+_________________________________________________________________
+    GO AROUND
+
+ 1. THROTTLE ………………………………………………………… MAX
+ 2. LDG GR lever ……………………………………………… UP, lamps out
+ 3. FLAP lever …………………………………………………… As required
+ 
+
+_________________________________________________________________
+    AFTER LANDING
+
+ 1. Seat firing pin ……………………………………… Insert
+ 2. FLAP lever …………………………………………………… DOWN 1
+ 3. Landing/Taxi lights …………………………… As required
+ 4. ANTI ice probe ………………………………………… OFF
+
+
+
+_________________________________________________________________
+    ENGINE SHUTDOWN
+
+ 1. Chocks ……………………………………………………………… Positioned
+ 2. Parking brakes ………………………………………… Set, if required
+ 3. Landing/Taxi lights …………………………… OFF
+ 4. HUD ……………………………………………………………………… OFF
+ 5. External lights ……………………………………… Off
+ 6. THROTTLE ………………………………………………………… STOP (after 2 minutes to IDLE)
+ 7. FUEL …………………………………………………………………… OFF
+ 8. BATT …………………………………………………………………… OFF
+ 9. Personal connections ………………………… Disconnect
+10. Canopy ……………………………………………………………… Open

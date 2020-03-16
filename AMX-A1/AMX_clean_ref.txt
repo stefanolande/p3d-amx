@@ -1,0 +1,97 @@
+___________________________________________________________________
+Operative speeds - Clean version
+___________________________________________________________________
+
+
+Take off speed           133 kts
+
+
+Pattern speed            300 kts
+
+
+Gear airspeed limit      230 kts - to lower AFTER flap
+
+
+Landing speed
+  Base turn
+    Flap down 2	         150 kts
+  Final
+    Flap down 2          140 kts
+
+
+Flap operation
+Manoeuvre - use for better maneuvr. - Max 0.83 Mach
+Down 1    - take-off                - Max 240 kts/0.4 Mach
+Down 2    - landing                 - Max 200 kts/0.32 Mach
+
+
+
+
+___________________________________________________________________
+Technical specification
+___________________________________________________________________
+
+Dimension (single seat)
+Length                    13.23 m/43.71 ft
+Wing span with Missiles   9.97 m/32.71 ft
+Height	                  4.55 m/14.92 ft
+Wing area 	          21 sqm/266 sq ft
+Aspect ratio	          3.75
+Wing sweep (25%)	  27.5°
+
+
+Weights (single seat)
+Operating empty weight	  7000 kg/15430 lb
+Full internal fuel	  2720 kg/6000 lb
+Max take-off weight	  13000 kg/28660 lb
+Max external load	  3800 kg/8500 lb
+
+
+Weights (two seater)
+Operating empty weight	  7380 kg/16270 lb
+Full internal fuel	  2180 kg/4810 lb
+Max take-off weight	  13000 kg/28660 lb
+Max external load	  3800 kg/8500 lb
+
+
+Engine (Rolls Royce Spey RB 168-807 Turbofan)
+Thrust	                  5000 kg/11030 lb
+
+
+Maximum speed (clean version)
+Low level	          0.85M
+Medium to high altitude	  0.9 M
+
+
+Mission performance – single seat (attack config., gun & ammo, 2 AIM-9L)
+Take-off ground run1	  514 m/1686 ft
+Time to 30000 ft	  5.9 min
+Ceiling                   12800 m/42000 ft
+Landing ground run        505 m/1675 ft
+Max level speed           0.8 Mach/530 kts
+Sustained turn rate(max)  13.5°/s
+Spec. excess power (max)  58 m/s
+Instantaneous turn
+rate (max)                22.0°/s
+Max load factor	          +7.33/-3 g
+Max load factor with
+external stores           +5.0/-2g
+
+
+Armament available
+Mk 82 Free Fall	                  up to 8 
+Mk 82 Snakeye (retarded)          up to 8
+Mk 83 Free fall	                  up to 6
+Mk 83 Matra (retarded)            up to 6
+Mk 84 Free fall                   2
+GBU 16 (mk83 laser guided bomb)   2
+Other (mk82 IR laser guided bomb) 2
+BL 755 (cluster bomb)             up to 6
+LR– 25 – 50A Rocket launcher      up to 6
+Aim-9L                            2
+20 mm Vulcan gun	          up to 400 rounds
+
+
+Self protection aids
+Internal ECM suite by Italian Microelettronica.
+Chaffs and Flares internal dispenser
