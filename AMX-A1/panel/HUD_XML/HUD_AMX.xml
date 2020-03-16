@@ -26,6 +26,8 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 	<Macro Name="bearing">@2 @4 - sin @3 cos * @1 cos  @3 sin * @1 sin @3 cos * @2 @4 - cos * -  atg2 rnor</Macro>
 	<Macro Name="Plane_Lat">(A:PLANE LATITUDE, radians)</Macro>
 	<Macro Name="Plane_Lon">(A:PLANE LONGITUDE, radians) /-/</Macro>
+	<Macro Name="Point_Bearing">(A:GPS WP TRUE BEARING, degrees)</Macro>
+
 
 </Element>	
 <Element>	
@@ -257,6 +259,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 	<Element>
 		<Macro Name="Point_Relative_Bearing">@degnor180( @Point_Bearing (A:Plane heading degrees true, degrees) - )</Macro>
 		<Macro Name="Point_Relative_Elevation">@Point_elevation (A:PLANE PITCH DEGREES, degrees) -</Macro>
+		<!-- <Macro Name="GPS_TOFROM">(@Point_Relative_Bearing 90 > @Point_Relative_Bearing -90 > || )if{ 0 } els{ 1 }</Macro> -->
 
 		<Macro Name="GPS_CDI">@radnor90( (A:GPS WP BEARING, radians) (A:GPS WP DESIRED TRACK, radians) - ) rddg</Macro>
 	</Element>
@@ -438,8 +441,10 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 -->
 <!-- MOD -->
 <!-- TO/FROM needle vertical line -->
+
+			<!-- NAV1 (TACAN) -->
 			<Element>
-			<Visible>(A:NAV HAS NAV:1,bool)</Visible>
+			<Visible>(L:HSI_NAV_SourceSwitch,bool) 1 == (A:GPS DRIVES NAV1,bool) 0 == and</Visible>
 				<Element>
 					<Position X="330" Y="287"/>
 					<Element>
@@ -459,7 +464,35 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 						</Select>
 					</Element>
 					<Shift>
-						<Value Minimum="-6" Maximum="+6">(A:NAV RADIAL:1, radians) pi + rddg (A:Plane heading degrees gyro, radians) rddg -</Value> 
+						<Value Minimum="-6" Maximum="+6">(A:NAV CDI:1, number) 2 /</Value> 
+						<Scale X="23"/>
+					</Shift>
+				</Element>
+			</Element>
+
+			<!-- NAV2 (TACAN) -->
+			<Element>
+			<Visible>(L:HSI_NAV_SourceSwitch,bool) 0 == (A:GPS DRIVES NAV1,bool) 0 == and</Visible>
+				<Element>
+					<Position X="330" Y="287"/>
+					<Element>
+						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
+						<Select>
+							<Value>(A:NAV TOFROM:2, enum)</Value>
+							<Case Value="1">
+								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
+									<Axis X="2" Y="87"/>
+		    						</Image>
+							</Case>
+							<Case Value="2">
+								<Image Name="CDI_FROM_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
+									<Axis X="2" Y="87"/>
+		    						</Image>
+							</Case>
+						</Select>
+					</Element>
+					<Shift>
+						<Value Minimum="-6" Maximum="+6">(A:NAV CDI:2, number) 2 /</Value> 
 						<Scale X="23"/>
 					</Shift>
 				</Element>
@@ -471,7 +504,8 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Element>
 						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
 						<Select>
-							<Value>@GPS_TOFROM</Value>
+							<Value>1</Value>
+							<!-- <Value>@GPS_TOFROM</Value> -->
 							<Case Value="1">
 								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
 									<Axis X="2" Y="87"/>
@@ -841,7 +875,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
       <String>%((A:AIRSPEED TRUE, knots) 15 > )%{if}%((A:AIRSPEED TRUE, knots))%!3d!%{else}%( '--' )%!s!%{end}%( ' T' )%!s!</String>
       </Text>
    </Element>
-<!-- clock -->
+<!-- QNH SETTING -->
    <Element>
 	<Position X="515" Y="800" /> 
       <Text X="135" Y="50" Length="4" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
