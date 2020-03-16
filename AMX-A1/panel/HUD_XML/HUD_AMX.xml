@@ -1,6 +1,6 @@
 <Gauge Name="HUD_Basic" Version="1.0">
 <Comment>
-**** BASIC VERSION for Lago AMX ****
+**** BASIC VERSION for Lago AMX - upd by Stefano Lande ****
 L:knob_hud_power, bool : HUD on/off switch
 L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= ILS NAV1
 
@@ -37,6 +37,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 		(A:PLANE PITCH DEGREES, degrees) abs 60 &lt;
 		(A:PLANE BANK DEGREES, degrees) abs 60 &lt; &amp;&amp;
 		(A:Radio Height, feet) 5000 &lt; &amp;&amp;
+		(L:switch_hud_altitude_mode, bool) &amp;&amp;
 	</Macro>
 	<Macro Name="Frag_Alt">500</Macro>
 	<Macro Name="FOV_left">-8.5</Macro>
@@ -526,6 +527,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 		<Element>
 			<Element>
 <!-- MOD: Upd rad alt ladder viscon -->
+<!--
 				<Element>
 					<Visible>(A:Radio Height, feet) 1500 &lt; @RALT_VALID and </Visible>
 					<Element>
@@ -547,14 +549,14 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Element>
 						<Element>
 							<Position X="539" Y="272"/>
-							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%( 1 )%!d!</String>
 								<Axis X="15" Y="20"/>
 							</Text>
 						</Element>
 						<Element>
 							<Position X="539" Y="497"/>
-							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%( 0 )%!d!</String>
 								<Axis X="13" Y="20"/>
 							</Text>
@@ -564,7 +566,9 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Shift><Value>1</Value><Scale X="10"/></Shift>
 					<Shift><Value>1</Value><Scale Y="0"/></Shift>
 				</Element>
+			-->
 <!-- MOD: Upd baro alt ladder viscon -->
+<!--
 				<Element>
 					<Visible>(A:Radio Height, feet) 1500 > </Visible>
 					<Element>
@@ -586,14 +590,14 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Element>
 						<Element>
 							<Position X="539" Y="272"/>
-							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%( 10 )%!d!</String>
 								<Axis X="15" Y="20"/>
 							</Text>
 						</Element>
 						<Element>
 							<Position X="539" Y="497"/>
-							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%( 0 )%!d!</String>
 								<Axis X="13" Y="20"/>
 							</Text>
@@ -603,17 +607,43 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Shift><Value>1</Value><Scale X="10"/></Shift>
 					<Shift><Value>1</Value><Scale Y="0"/></Shift>
 				</Element>
+
+			-->
+
+			<!-- AOA on the left -->
 				<Element>
 					<Element>
-    						<Position X="330" Y="287"/>
-						<Image Name="left_scale_A_00FF00.bmp" Bright="Yes">
+    						<Position X="330" Y="337"/>
+						<Image Name="aoa_scale.bmp" Bright="Yes">
 							<Axis X="226" Y="139"/>
 						</Image>
 					</Element>
 					<Element>
-    	  					<Position X="127" Y="294"/>
+    	  					<Position X="80" Y="420"/>
+						<Image Name="right_caret_A_00FF00.bmp" Bright="Yes">
+							<Axis X="0" Y="0"/>
+						</Image>
+						<Shift>
+							<Value>3 (A:INCIDENCE ALPHA,degrees) *</Value>
+							<Scale Y="-9"/>
+						</Shift>
+					</Element>
+					<Shift><Value>1</Value><Scale X="-10"/></Shift>
+					<Shift><Value>1</Value><Scale Y="0"/></Shift>
+				</Element>
+
+			<!-- VS on the right -->
+				<Element>
+					<Element>
+    						<Position  X="330" Y="337"/>
+						<Image Name="right_vs_scale.bmp" Bright="Yes">
+							<Axis X="-217" Y="136"/>
+						</Image>
+					</Element>
+					<Element>
+    	  					<Position X="539" Y="344"/>
 						<Image Name="left_caret_A_00FF00.bmp" Bright="Yes">
-							<Axis X="5" Y="17"/>
+							<Axis X="-35" Y="13"/>
 						</Image>
 						<Shift>
 							<Value>(A:Vertical speed,feet per minute) -2000 max 2000 min</Value>
@@ -621,22 +651,22 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 						</Shift>
 					</Element>
 					<Element>
-						<Position X="80" Y="204"/>
-						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+						<Position X="539" Y="254"/>
+						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 							<String>%( +1 )%!+d!</String>
 							<Axis X="17" Y="20"/>
 						</Text>
 					</Element>
 					<Element>
-						<Position X="80" Y="294"/>
-						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+						<Position X="539" Y="344"/>
+						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 							<String>%( 0 )%!2d!</String>
 							<Axis X="13" Y="20"/>
 						</Text>
 					</Element>
 					<Element>
-						<Position X="80" Y="384"/>
-						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Comic Sans MS" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
+						<Position X="539" Y="434"/>
+						<Text Bright="Yes" Luminous="Yes" X="100" Y="40" Length="5" Font="Tahoma" Color="#00FF00" Adjust="Left" VerticalAdjust="Center" Multiline="No" Fixed="No">
 							<String>%( -1 )%!+d!</String>
 							<Axis X="15" Y="20"/>
 						</Text>
@@ -652,7 +682,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 						<Element>
 							<Position X="280" Y="164"/>
 							<Clip Left="150" Right="510"/>
-							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Tahoma" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%(@hdg_int(-20) dnor 10 /)%!d!</String>
 							</Text>
 							<Shift>
@@ -666,7 +696,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 						<Element>
 							<Position X="280" Y="164"/>
 							<Clip Left="150" Right="510"/>
-							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Tahoma" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%(@hdg_int(-10) dnor 10 /)%!d!</String>
 							</Text>
 							<Shift>
@@ -678,7 +708,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Element>
 						<Position X="280" Y="164"/>
 						<Clip Left="150" Right="510"/>
-						<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+						<Text X="100" Y="40" Bright="Yes" Length="34" Font="Tahoma" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
 							<String>%(@hdg_int(0) dnor 10 /)%!d!</String>
 						</Text>
 						<Shift>
@@ -691,7 +721,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 						<Element>
 							<Position X="280" Y="164"/>
 							<Clip Left="150" Right="510"/>
-							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Tahoma" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%(@hdg_int(10) dnor 10 /)%!d!</String>
 							</Text>
 							<Shift>
@@ -705,7 +735,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 						<Element>
 							<Position X="280" Y="164"/>
 							<Clip Left="150" Right="510"/>
-							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Comic Sans MS" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
+							<Text X="100" Y="40" Bright="Yes" Length="34" Font="Tahoma" Color="#00FF00" Adjust="Center" VerticalAdjust="Center" Multiline="No" Fixed="No">
 								<String>%(@hdg_int(20) dnor 10 /)%!d!</String>
 							</Text>
 							<Shift>
@@ -769,49 +799,57 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 		  </Shift>
 	   </Element>
 
+
 <!-- IAS/Mach -->
    <Element>
-	<Position X="0" Y="165" /> 
-      <Text X="145" Y="50" Length="5" Fixed="No" Font="Arial" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-         <String>%((A:AIRSPEED INDICATED,knots) 300 &lt;)%{if}%((A:AIRSPEED INDICATED,knots))%!03d!%{else}%( 'M' )%!s!%((A:AIRSPEED MACH,machs))%!4.2f!%{end}</String>
+	<Position X="10" Y="165" /> 
+      <Text X="145" Y="50" Length="5" Fixed="No" Font="Tahoma" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((A:AIRSPEED INDICATED,knots))%!03d!</String>
+      </Text>
+   </Element>
+   <Element>
+	<Position X="10" Y="115" /> 
+      <Text X="145" Y="50" Length="5" Fixed="No" Font="Tahoma" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((A:AIRSPEED MACH,machs))%!4.2f!</String>
+      </Text>
+   </Element>
+
+   <!-- G FORCE -->
+   <Element>
+	<Position X="20" Y="395" /> 
+      <Text X="135" Y="50" Length="4" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%((A:G FORCE, gforce))%!0.1f!</String>
+      </Text>
+   </Element>
+     <Element>
+	<Position X="32" Y="425" /> 
+      <Text X="20" Y="50" Length="1" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+         <String>%( 'G' )%!s!</String>
       </Text>
    </Element>
 <!-- Baro/Radio Height -->
    <Element>
-	<Position X="555" Y="165" /> 
-      <Text X="100" Y="50" Length="5" Fixed="Yes" Font="Arial" FontSize="45" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-         <String>%((A:RADIO HEIGHT,feet) 1500 > )%{if}%((A:Indicated Altitude,feet))%!05d!%{else}%((A:RADIO HEIGHT,feet))%!05d!%!s!%{end}</String>
+	<Position X="573" Y="165" /> 
+      <Text X="100" Y="50" Length="6" Fixed="no" Font="Tahoma" FontSize="45" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+      	 <String>%(@RALT_VALID)%{if}%( 'R' )%!s!%((A:Radio Height,feet))%!0.3d!%{else}%((A:Indicated Altitude,feet))%!0.5d!</String>
       </Text>
-   </Element>
-   <Element>
-	<Position X="660" Y="165" /> 
-      <Text X="45" Y="50" Length="1" Fixed="Yes" Font="Arial" FontSize="45" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-         <String>%((A:RADIO HEIGHT,feet) 1500 > )%{if}%( 'B' )%!s!%{else}%( 'R' )%!s!%{end}</String>
-      </Text>
-   </Element>
-
+   </Element> 
 <!-- Ground speed -->
    <Element>
-	<Position X="0" Y="750" /> 
-      <Text X="145" Y="50" Length="8" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-      <String>%((A:AIRSPEED TRUE, knots) 15 > )%{if}%((A:AIRSPEED TRUE, knots))%!3d!%{else}%( '--' )%!s!%{end}%( ' ktas' )%!s!</String>
+	<Position X="600" Y="750" /> 
+      <Text X="145" Y="50" Length="8" Fixed="Yes" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+      <String>%((A:AIRSPEED TRUE, knots) 15 > )%{if}%((A:AIRSPEED TRUE, knots))%!3d!%{else}%( '--' )%!s!%{end}%( ' T' )%!s!</String>
       </Text>
    </Element>
 <!-- clock -->
    <Element>
-	<Position X="0" Y="800" /> 
-      <Text X="165" Y="45" Length="10" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-         <String>%((P:Local time,hours) flr 23 + 24 % 1 +)%!02d!:%((P:Local time,minutes) flr 60 %)%!02d!:%((P:Local time,seconds) flr 60 %)%!02d!%( 'L' )%!s!</String>
-      </Text>
-   </Element>
-
-<!-- Kohlsman -->
-   <Element>
-	<Position X="540" Y="345" /> 
-      <Text X="135" Y="50" Length="4" Fixed="No" Font="Arial" FontSize="36" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+	<Position X="515" Y="800" /> 
+      <Text X="135" Y="50" Length="4" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Right" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
          <String>%((A:KOHLSMAN SETTING HG, mbar))%!d!</String>
       </Text>
    </Element>
+
+<!-- G FORCE - move on the left -->
 
 <!-- Set DME/GPS WP bearing/distance readout mode 
 DME_Mode 1: GPS
@@ -831,31 +869,73 @@ DME_Mode 3: NAV2 TACAN
 
 <!-- DME/GPS WP ICAO -->
    <Element>
-	<Position X="600" Y="710" /> 
-      <Text X="135" Y="45" Length="4" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-       <String>%((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP NEXT ID,string))%!s!%( ' ' )%!s!%{:2}%((A:NAV IDENT:1,string))%!s!%{:3}%((A:NAV IDENT:2,string))%!s!%{end}</String>
+	<Position X="15" Y="710" /> 
+      <Text X="135" Y="45" Length="4" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+       <String>%((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP NEXT ID,string))%!s!%{:2}%((A:NAV IDENT:1,string))%!s!%{:3}%((A:NAV IDENT:2,string))%!s!%{end}</String>
       </Text>
    </Element>
 <!-- DME/GPS WP distance -->
    <Element>
-	<Position X="600" Y="750" /> 
-      <Text X="135" Y="45" Length="7" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-       <String>%((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP DISTANCE, nmiles))%!d!%{:2}%((A:NAV DME:1, nmiles))%!d!%{:3}%((A:NAV DME:2, nmiles))%!d!%{end}%( ' nm' )%!s!</String>
+	<Position X="15" Y="750" /> 
+      <Text X="135" Y="45" Length="8" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+       <String>%( 'NM' )%!s! %((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP DISTANCE, nmiles))%!d!%{:2}%((A:NAV DME:1, nmiles))%!.1f!%{:3}%((A:NAV DME:2, nmiles))%!d!%{end}</String>
       </Text>
    </Element>
 <!-- DME/GPS WP bearing -->
    <Element>
-	<Position X="600" Y="800" /> 
-      <Text X="100" Y="50" Length="3" Fixed="No" Font="Arial" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+	<Position X="15" Y="800" /> 
+      <Text X="100" Y="50" Length="3" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
        <String>%((L:DME_Mode,number))%{case}%{:0}%((A:AUTOPILOT HEADING LOCK DIR, degrees) )%!03d!%{:1}%((A:GPS WP BEARING,degrees) abs )%!s!%{:2}%((A:NAV RADIAL:1,radians) pi + rddg )%!03d!%{:3}%((A:NAV RADIAL:2,radians) pi + rddg )%!03d!%{end}</String>
       </Text>
    </Element>
    <Element>
 	<Position X="653" Y="795" /> 
-      <Text X="15" Y="50" Length="2" Fixed="No" Font="Arial" FontSize="30" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
+      <Text X="15" Y="50" Length="2" Fixed="No" Font="Tahoma" FontSize="30" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
          <String>o</String>
       </Text>
    </Element>
+
+
+<!-- altitude dial -->
+   <Element>
+	<Position X="540" Y="100"/>
+   	<Image Name="Analog_dial_B_00FF00.bmp" Bright="Yes" ImageSizes="11,11">
+   				<Axis X="0" Y="0"/>
+		</Image>
+   </Element>
+
+	<Element>
+		<Visible>@RALT_VALID</Visible>
+		<Position X="625" Y="185"/>
+		<Element>
+			<Image Name="alt_caret.bmp" Bright="Yes">
+				<Axis X="15" Y="71"/>
+			</Image>Z
+			<Rotate>
+				<Value>
+					 (A:Radio Height,feet) 1000 % 1000 / pi * 2 *
+				</Value>
+			</Rotate>
+			<Shift><Value>@Shift</Value><Scale Y="138"/></Shift>
+		</Element>
+	</Element>
+
+		<Element>
+			<Visible>@RALT_VALID not</Visible>
+		<Position X="625" Y="185"/>
+		<Element>
+			<Image Name="alt_caret.bmp" Bright="Yes">
+				<Axis X="15" Y="71"/>
+			</Image>Z
+			<Rotate>
+				<Value>
+					 (A:Indicated Altitude,feet) 1000 % 1000 / pi * 2 *
+				</Value>
+			</Rotate>
+			<Shift><Value>@Shift</Value><Scale Y="138"/></Shift>
+		</Element>
+	</Element>
+
 
 <!-- Jag ILS FD symbols NAV:2 -->
   <Element>

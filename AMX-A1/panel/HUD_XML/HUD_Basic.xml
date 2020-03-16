@@ -765,7 +765,7 @@ MOD - stripped
    <Element>
 	<Position X="0" Y="165" /> 
       <Text X="145" Y="50" Length="5" Fixed="No" Font="Arial" FontSize="45" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-         <String>%((A:AIRSPEED INDICATED,knots) 300 &lt;)%{if}%((A:AIRSPEED INDICATED,knots))%!03d!%{else}%( 'M' )%!s!%((A:AIRSPEED MACH,machs))%!4.2f!%{end}</String>
+         <String>%((A:AIRSPEED INDICATED,knots) 300 &lt;)%{if}%((A:AIRSPEED INDICATED,knots))%!03d!%{else}%( 'M' )%!s!%((A:AIRSPEED MACH,knots))%!4.2f!%{end}</String>
       </Text>
    </Element>
 <!-- Baro/Radio Height -->

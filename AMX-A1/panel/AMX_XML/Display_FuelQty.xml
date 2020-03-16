@@ -11,8 +11,8 @@ Fuel_Qty_Selected buttons:
  0= default, show fuselage tank CENTER
  1= LW, show left wing tank LEFT MAIN
  2= RW, show right wing tank RIGHT MAIN
- 3= LUW, show left underwing tank EXTERNAL1 (seems outb droptanks LEFT AUX /RIGHT AUX are not shown)
- 4= RUW, show right underwing tank EXTERNAL2
+ 3= LUW, show left underwing tank EXTERNAL1 or LEFT AUX (AMX can only carry 2x inb or 2x outb droptanks, not 4x at the same time)
+ 4= RUW, show right underwing tank EXTERNAL2 or RIGHT AUX
 
 Warning LL FUEL: below 300 Kg - 99 Gallon
 
@@ -30,7 +30,9 @@ Warning LL FUEL: below 300 Kg - 99 Gallon
   (L:Fuel_Qty_Select1, enum) (A:FUEL TANK LEFT MAIN QUANTITY, gallons) * +
   (L:Fuel_Qty_Select2, enum) (A:FUEL TANK RIGHT MAIN QUANTITY, gallons) * +
   (L:Fuel_Qty_Select3, enum) (A:FUEL TANK EXTERNAL1 QUANTITY, gallons) * +
-  (L:Fuel_Qty_Select4, enum) (A:FUEL TANK EXTERNAL2 QUANTITY, gallons) * + 3.0418 * (>L:Fuel_Qty_Readout, enum)
+  (L:Fuel_Qty_Select3, enum) (A:FUEL TANK LEFT AUX QUANTITY, gallons) * +
+  (L:Fuel_Qty_Select4, enum) (A:FUEL TANK EXTERNAL2 QUANTITY, gallons) * + 
+  (L:Fuel_Qty_Select4, enum) (A:FUEL TANK RIGHT AUX QUANTITY, gallons) * + 3.0418 * (>L:Fuel_Qty_Readout, enum)
 
 <!-- calculate bingo warning light state: bingo knob bug range 0 - 360 = 0 - 2000 Kg -->
 	(A:FUEL TANK CENTER QUANTITY, gallon) 0.547524 * (L:knob_bingo_bug, number) &lt; (&gt;L:Warn_Fuel_Bingo, bool)

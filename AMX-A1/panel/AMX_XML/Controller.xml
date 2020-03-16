@@ -79,10 +79,10 @@
     (A:ENG OIL PRESSURE:1, psi) 20 &lt; or
     (A:GENERAL ENG MASTER ALTERNATOR:1,bool) 0 == or
 	(A:FUEL TOTAL QUANTITY,gallon) 50 &lt; or
-	(A:GENERAL ENG EXHAUST GAS TEMPERATURE:1,celsius) 750 &gt; or
+	(A:GENERAL ENG EXHAUST GAS TEMPERATURE:1, celsius) 740 &gt; or
 	(A:EXIT OPEN:0,percent) 5 &gt; or
 	(L:Warn_Fuel_Bingo, bool) or
-	(A:FUEL TOTAL QUANTITY,gallon) 50 &lt; or
+	(A:FUEL TOTAL QUANTITY,gallon) 99 &lt; or
 	if{ 1 (>L:light_master_caution, bool) } els{ 0 (>L:light_master_caution, bool) } }
 
 <!-- Jettison stores -->

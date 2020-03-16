@@ -1,0 +1,44 @@
+<SimBase.Document Type="AceXML" version="1,0">
+<Filename>Display_HUD_Kohlsman.xml</Filename>
+<Descr>AceXML Document</Descr>
+<SimGauge.Gauge id="Gauge">
+<FloatPosition>0,0</FloatPosition>
+<Size>175,50</Size>
+<Update_When_Hidden>false</Update_When_Hidden>
+
+<!-- For Lago AMX gauge - display HUD kohlsman in MB and alt mode rad or baro -->
+<Element id="Alt mode Readout">
+<FloatPosition>18.000,9.000</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="Com2 Readout">
+	<Size>175,30</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>30</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%((L:switch_hud_altitude_mode, bool))%{if}%( 'RAD' )%!s!%{else}%( 'BAR' )%!s!</GaugeString>
+	</GaugeText>
+</Element>
+
+<Element id="Kohlsman Readout">
+<FloatPosition>87.000,8.000</FloatPosition>
+<Visibility>(A:CIRCUIT GENERAL PANEL ON, bool)</Visibility>
+	<GaugeText id="Com2 Readout">
+	<Size>175,30</Size>
+	<Bright>True</Bright>
+	<FontFace>Quartz</FontFace>
+	<FontColor>#d58400</FontColor>
+	<FontHeight>30</FontHeight>
+	<Bold>False</Bold>
+	<Transparent>True</Transparent>
+	<HorizontalAlign>LEFT</HorizontalAlign>
+	<GaugeString>%((A:KOHLSMAN SETTING MB, Millibars))%!04d!</GaugeString>
+ </GaugeText>
+</Element>
+
+
+</SimGauge.Gauge>
+</SimBase.Document>
