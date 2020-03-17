@@ -43,7 +43,7 @@
 	<GaugeText><FontFace>Arial</FontFace><FontColor>Yellow</FontColor><FontHeight>16</FontHeight><Size>220,18</Size><Luminous>true</Luminous><HorizontalAlign>LEFT</HorizontalAlign><Tabs>0,70</Tabs><GaugeString>
 	%( 'Center Sta  ' )%!s!%\t\{rev}%((L:ROW_55,number))%{case}
 	%{:0} --- 
-	%{:1} Orpheus 
+	%{:1} Litening 
 	%{:2} Mk82 
 	%{end}</GaugeString></GaugeText>
 </Element>
@@ -54,7 +54,8 @@
 	%{:0} --- 
 	%{:1} Tanks 
 	%{:2} Mk82 
-	%{:3} Mk84 
+	%{:3} Lizard 
+	%{:4} Mk84 		
 	%{end}</GaugeString></GaugeText>
 </Element>
 <Element id="ROW_105">
@@ -177,8 +178,8 @@
 	<Script>
 	(L:ROW_30, Number) ++ (&gt;L:ROW_30, Number)
 	(L:ROW_30, Number) 1 &gt; if{ 0 (&gt;L:ROW_30, Number) }
-	(L:ROW_30, Number) 0 == if{ 100 (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent) }
-	(L:ROW_30, Number) 1 == if{  50 (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent)  50 (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent) }
+	(L:ROW_30, Number) 0 == if{ 100 (>C:SIMVARS:FUEL TANK CENTER LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent) }
+	(L:ROW_30, Number) 1 == if{ 50 (>C:SIMVARS:FUEL TANK CENTER LEVEL,percent) 50 (>C:SIMVARS:FUEL TANK LEFT MAIN LEVEL,percent)  50 (>C:SIMVARS:FUEL TANK RIGHT MAIN LEVEL,percent) }
 	</Script>
 	</MouseClick>
 </MouseArea>
@@ -192,7 +193,7 @@
 	(L:ROW_55, Number) ++ (&gt;L:ROW_55, Number)
 	(L:ROW_55, Number) 2 &gt; if{ 0 (&gt;L:ROW_55, Number) }
 	(L:ROW_55, Number) 0 == if{    0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
-	(L:ROW_55, Number) 1 == if{ 1000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
+	(L:ROW_55, Number) 1 == if{  440 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
 	(L:ROW_55, Number) 2 == if{  500 (>C:SIMVARS:PAYLOAD STATION WEIGHT:1,pounds) }
 	</Script>
 	</MouseClick>
@@ -209,7 +210,8 @@
 	(L:ROW_80, Number) 0 == if{    0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
 	(L:ROW_80, Number) 1 == if{  300 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds) 100 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
 	(L:ROW_80, Number) 2 == if{ 1000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
-	(L:ROW_80, Number) 3 == if{ 4000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
+	(L:ROW_80, Number) 3 == if{ 1020 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
+	(L:ROW_80, Number) 4 == if{ 4000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
 	</Script>
 	</MouseClick>
 </MouseArea>
