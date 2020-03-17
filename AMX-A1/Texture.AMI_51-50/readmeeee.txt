@@ -1,0 +1,19 @@
+[fltsim.xx]
+title=AMX-1A AMI_51-50
+sim=AMX_P3D
+model=
+panel=
+sound=
+texture=AMI_51-50
+kb_checklists=AMX_Checklist
+kb_reference=
+atc_id=201
+atc_airline=Ghibli
+atc_flight_number=50
+ui_manufacturer=Alenia/Embraer
+ui_Type=AMX
+ui_variation=MM7186/51-50, 132° Gruppo Istrana AB Italy
+description= \Original Visual model: Francesco Missarino \Updates and Freeware Release by SOH Members
+atc_heavy=0
+ui_createdby=
+ui_typerole=Single Engine Jet
