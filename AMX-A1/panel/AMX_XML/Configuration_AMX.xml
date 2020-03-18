@@ -206,7 +206,7 @@
 	<ClickType>LeftSingle+RightSingle</ClickType>
 	<Script>
 	(L:ROW_80, Number) ++ (&gt;L:ROW_80, Number)
-	(L:ROW_80, Number) 3 &gt; if{ 0 (&gt;L:ROW_80, Number) }
+	(L:ROW_80, Number) 4 &gt; if{ 0 (&gt;L:ROW_80, Number) }
 	(L:ROW_80, Number) 0 == if{    0 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
 	(L:ROW_80, Number) 1 == if{  300 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds) 100 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent) 100 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
 	(L:ROW_80, Number) 2 == if{ 1000 (>C:SIMVARS:PAYLOAD STATION WEIGHT:2,pounds)   0 (>C:SIMVARS:FUEL TANK EXTERNAL1 LEVEL,percent)   0 (>C:SIMVARS:FUEL TANK EXTERNAL2 LEVEL,percent) }
