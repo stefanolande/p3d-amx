@@ -444,7 +444,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 
 			<!-- NAV1 (TACAN) -->
 			<Element>
-			<Visible>(L:HSI_NAV_SourceSwitch,bool) 1 == (A:GPS DRIVES NAV1,bool) 0 == and</Visible>
+			<Visible>(L:HSI_NAV_SourceSwitch,bool) 1 == (A:GPS DRIVES NAV1,bool) 0 == and (A:NAV HAS NAV:1,bool) and</Visible>
 				<Element>
 					<Position X="330" Y="287"/>
 					<Element>
@@ -462,7 +462,7 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 
 			<!-- NAV2 (TACAN) -->
 			<Element>
-			<Visible>(L:HSI_NAV_SourceSwitch,bool) 0 == (A:GPS DRIVES NAV1,bool) 0 == and</Visible>
+			<Visible>(L:HSI_NAV_SourceSwitch,bool) 0 == (A:GPS DRIVES NAV1,bool) 0 == and (A:NAV HAS NAV:2,bool) and</Visible>
 				<Element>
 					<Position X="330" Y="287"/>
 					<Element>
