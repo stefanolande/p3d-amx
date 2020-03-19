@@ -449,19 +449,9 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Position X="330" Y="287"/>
 					<Element>
 						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
-						<Select>
-							<Value>(A:NAV TOFROM:1, enum)</Value>
-							<Case Value="1">
 								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
 									<Axis X="2" Y="87"/>
 		    						</Image>
-							</Case>
-							<Case Value="2">
-								<Image Name="CDI_FROM_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
-									<Axis X="2" Y="87"/>
-		    						</Image>
-							</Case>
-						</Select>
 					</Element>
 					<Shift>
 						<Value Minimum="-6" Maximum="+6">(A:NAV CDI:1, number) 2 /</Value> 
@@ -477,19 +467,9 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 					<Position X="330" Y="287"/>
 					<Element>
 						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
-						<Select>
-							<Value>(A:NAV TOFROM:2, enum)</Value>
-							<Case Value="1">
 								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
 									<Axis X="2" Y="87"/>
 		    						</Image>
-							</Case>
-							<Case Value="2">
-								<Image Name="CDI_FROM_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
-									<Axis X="2" Y="87"/>
-		    						</Image>
-							</Case>
-						</Select>
 					</Element>
 					<Shift>
 						<Value Minimum="-6" Maximum="+6">(A:NAV CDI:2, number) 2 /</Value> 
@@ -498,28 +478,17 @@ L:HSI_NAV_SourceSwitch, bool : HSI source switch TACAN/ILS  0= TACAN NAV2  1= IL
 				</Element>
 			</Element>
 			<Element>
-			<Visible>(A:GPS IS ACTIVE WAY POINT,bool)</Visible>
+			<Visible>(A:GPS DRIVES NAV1,bool)</Visible>
 				<Element>
 					<Position X="330" Y="287"/>
 					<Element>
 						<Clip Top="75" Left="-100" Right="760" Bottom="900"/>
-						<Select>
-							<Value>1</Value>
-							<!-- <Value>@GPS_TOFROM</Value> -->
-							<Case Value="1">
 								<Image Name="CDI_TO_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
 									<Axis X="2" Y="87"/>
-		    						</Image>
-							</Case>
-							<Case Value="2">
-								<Image Name="CDI_FROM_A_00FF00.bmp" Bright="Yes" ImageSizes="11,71">
-									<Axis X="2" Y="87"/>
-		    						</Image>
-							</Case>
-						</Select>
+		    						</Image>							
 					</Element>
 					<Shift>
-						<Value>@GPS_CDI -6 max 6 min</Value>
+						<Value Minimum="-6" Maximum="+6">@GPS_CDI</Value>
 						<Scale X="23"/>
 					</Shift>
 				</Element>
