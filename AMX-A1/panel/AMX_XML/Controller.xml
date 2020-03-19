@@ -5,7 +5,7 @@
 <SimGauge.Gauge id="Gauge">
 <!-- For Lago P3D AMX -->
 
-<Update>
+<Update id="Update6">
 <Frequency>6</Frequency>
 <Script>
 (A:CABIN NO SMOKING ALERT SWITCH, bool) ! (L:INIT_CONFIG, bool) ! and if{
@@ -41,13 +41,14 @@
 
 	25 (&gt;L:HUD_Coll_Pitch, number)
 
+	1 (&gt;L:Mirrors_P3D, bool)
+
 <!-- Open Loadout panel -->
 	10001 (>K:PANEL_ID_OPEN)  
 
     (>K:CABIN_NO_SMOKING_ALERT_SWITCH_TOGGLE)
 	(A:CABIN NO SMOKING ALERT SWITCH, bool) if{ 1 (>L:INIT_CONFIG, bool) } }
 <!-- END Initialization -->
-
 
 
 <!-- Cuts out starter after engine is ignited -->
@@ -102,6 +103,7 @@
 	(L:Switch_Nav-Flash, number) 2 == if{ 1 (>L:Light_Ext, bool) } els{ 0 (>L:Light_Ext, bool) } }
 </Script>
 </Update>
+
 
 </SimGauge.Gauge>
 </SimBase.Document>
