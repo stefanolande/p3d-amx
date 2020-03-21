@@ -881,7 +881,7 @@ DME_Mode 3: NAV2 TACAN
    <Element>
 	<Position X="15" Y="750" /> 
       <Text X="135" Y="45" Length="8" Fixed="No" Font="Tahoma" FontSize="36" Adjust="Left" VerticalAdjust="Top" Color="#00FF00" Luminous="1">
-       <String>%( 'NM' )%!s! %((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP DISTANCE, nmiles))%!d!%{:2}%((A:NAV DME:1, nmiles))%!.1f!%{:3}%((A:NAV DME:2, nmiles))%!d!%{end}</String>
+       <String>%( 'NM' )%!s! %((L:DME_Mode,number))%{case}%{:0}--%{:1}%((A:GPS WP DISTANCE, nmiles))%!.1f!%{:2}%((A:NAV DME:1, nmiles))%!.1f!%{:3}%((A:NAV DME:2, nmiles))%!.1f!%{end}</String>
       </Text>
    </Element>
 <!-- DME/GPS WP bearing -->
